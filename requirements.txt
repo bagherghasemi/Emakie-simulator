@@ -1,0 +1,7 @@
+pandas
+pandas-gbq>=0.26.1
+numpy
+pyyaml
+pyarrow
+google-cloud-bigquery
+tqdm

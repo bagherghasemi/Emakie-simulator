@@ -1,0 +1,14 @@
+# Premium fragile: lower volume, higher prices, medium CTR, high expectation → higher refund
+seed: 44
+
+simulation:
+  start_date: "2023-01-01"
+  end_date: "2024-01-01"
+
+num_customers: 300
+num_products: 12
+creatives: 20
+
+base_ctr: 0.018
+base_conversion: 0.03
+base_refund_rate: 0.14

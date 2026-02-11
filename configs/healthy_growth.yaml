@@ -1,0 +1,14 @@
+# Healthy growth: moderate CTR, good conversion, low refund
+seed: 42
+
+simulation:
+  start_date: "2023-01-01"
+  end_date: "2024-01-01"
+
+num_customers: 600
+num_products: 25
+creatives: 35
+
+base_ctr: 0.025
+base_conversion: 0.045
+base_refund_rate: 0.04
