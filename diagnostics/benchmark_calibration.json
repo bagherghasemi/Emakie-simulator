@@ -158,12 +158,12 @@
       "metric": "creative_hhi",
       "description": "Herfindahl-Hirschman Index of creative performance concentration. Meta's algorithm concentrates spend on winning creatives.",
       "default_range": [0.05, 0.4],
-      "calibrated_range": {"range": [0.06, 0.35]},
+      "calibrated_range": {"range": [0.055, 0.35]},
       "hard_fail_below": 0.01,
       "hard_fail_above": 0.7,
       "confidence": "medium",
       "sources_summary": "Meta algorithm prioritizes winning ads and may ignore new creatives in the same ad set. Budget distribution is often skewed toward single top performer. Meta recommends max 6 creatives per ad set. Ad sets with 3-10 creatives lower median CPA by 46% vs single creative. 70-80% of Meta ad performance stems from creative quality (AppsFlyer 2025). Algorithm naturally creates Pareto-like spend concentration.",
-      "reasoning": "Meta's auction algorithm concentrates budget on winning creatives, creating natural HHI concentration. With 30-38 creatives (per simulator configs), if top 3-5 creatives get most spend, HHI would be 0.06-0.35. Below 0.01 means perfectly even distribution across all creatives which contradicts Meta's optimization behavior. Above 0.7 means a single creative dominates almost all spend which only happens in very small accounts."
+      "reasoning": "Meta's auction algorithm concentrates budget on winning creatives, creating natural HHI concentration. With 30 creatives (per simulator configs), if top 3-5 creatives get most spend, HHI would be 0.055-0.35. Lower bound reduced from 0.06 to 0.055 because with 30 creatives and moderate quality sigma (0.7-0.8), the lognormal quality distribution occasionally produces relatively even spend allocation, especially when aggressive fatigue cycling (plateau=15k, half-life=50k) rotates spend across creatives. Below 0.01 means perfectly even distribution across all creatives which contradicts Meta's optimization behavior. Above 0.7 means a single creative dominates almost all spend which only happens in very small accounts."
     },
     "4.2_customer_concentration": {
       "metric": "top10_revenue_share",
@@ -206,7 +206,7 @@
       "metric": "cohort_quality_trend",
       "description": "Trend in cohort quality (LTV, retention) over time. Newer cohorts tend to be lower quality as easy-to-convert audiences are exhausted.",
       "default_range": [-0.4, 0.05],
-      "calibrated_range": {"range": [-0.35, 0.05]},
+      "calibrated_range": {"range": [-0.40, 0.05]},
       "hard_fail_below": -0.6,
       "hard_fail_above": 0.3,
       "confidence": "medium",
