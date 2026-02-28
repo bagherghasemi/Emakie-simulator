@@ -9,7 +9,7 @@ simulation:
 num_prospects: 5000
 num_customers: 50
 num_products: 10
-creatives: 30
+creatives: 15
 
 base_ctr: 0.025
 base_conversion: 0.04
