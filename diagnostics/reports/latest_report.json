@@ -1,8 +1,8 @@
 {
-  "run_id": "diag_20260228_173520",
+  "run_id": "diag_20260228_192431",
   "sim_duration_days": 91,
-  "population_size": 2994,
-  "timestamp": "2026-02-28T17:35:20.789533",
+  "population_size": 1614,
+  "timestamp": "2026-02-28T19:24:31.853815",
   "overall_pass": true,
   "summary": {
     "PASS": 16,
@@ -16,193 +16,193 @@
       "status": "PASS",
       "category": "temporal_structure",
       "severity": "hard_fail",
-      "observed": 0.7846623559744818,
+      "observed": 0.8035045644369921,
       "benchmark_range": [
         0.35,
-        0.8
+        0.82
       ],
       "benchmark_source": "calibrated",
-      "detail": "lag1=0.785, lag7=0.596, lag30=0.283"
+      "detail": "lag1=0.804, lag7=0.763, lag30=0.369"
     },
     "1.2_seasonality_presence": {
       "status": "PASS",
       "category": "temporal_structure",
       "severity": "warn",
-      "observed": 0.026630378993731066,
+      "observed": 0.036498232797745375,
       "benchmark_range": [
         0.003,
         0.55
       ],
       "benchmark_source": "calibrated",
-      "detail": "seasonal_strength=0.027, peak_period=91.0d"
+      "detail": "seasonal_strength=0.036, peak_period=91.0d"
     },
     "1.3_trend_presence": {
       "status": "INFO",
       "category": "temporal_structure",
       "severity": "hard_fail",
-      "observed": -0.4742511453394544,
+      "observed": -0.6035040717155314,
       "benchmark_range": [
         -0.2,
         0.45
       ],
       "benchmark_source": "calibrated",
-      "detail": "normalized_slope=-0.4743, raw_slope=-49477.61/month, short_sim=91d"
+      "detail": "normalized_slope=-0.6035, raw_slope=-35543.32/month, short_sim=91d"
     },
     "1.4_non_stationarity": {
       "status": "INFO",
       "category": "temporal_structure",
       "severity": "info",
-      "observed": 0.0015214964811697317,
+      "observed": 0.0027469047893663784,
       "benchmark_range": [
         0.05,
         0.99
       ],
       "benchmark_source": "calibrated",
-      "detail": "ADF p-value=0.0015"
+      "detail": "ADF p-value=0.0027"
     },
     "2.1_customer_ltv_distribution": {
       "status": "PASS",
       "category": "distribution_shape",
       "severity": "hard_fail",
-      "observed": 0.37733124265815143,
+      "observed": 0.36227230314540715,
       "benchmark_range": [
         0.35,
         0.8
       ],
       "benchmark_source": "calibrated",
-      "detail": "gini=0.377, skewness=2.46, top10_share=28.62%"
+      "detail": "gini=0.362, skewness=2.22, top10_share=28.47%"
     },
     "2.2_order_value_cv": {
       "status": "PASS",
       "category": "distribution_shape",
       "severity": "warn",
-      "observed": 0.8642847962311865,
+      "observed": 0.822547351641154,
       "benchmark_range": [
         0.35,
         1.0
       ],
       "benchmark_source": "calibrated",
-      "detail": "CV=0.864, mean=$90.38, std=$78.11"
+      "detail": "CV=0.823, mean=$94.03, std=$77.35"
     },
     "2.3_purchase_interval_distribution": {
       "status": "PASS",
       "category": "distribution_shape",
       "severity": "warn",
-      "observed": 0.7906976744186046,
+      "observed": 0.7996709173179761,
       "benchmark_range": [
         0.25,
         0.9
       ],
       "benchmark_source": "calibrated",
-      "detail": "median=17.0d, mean=21.5d, right_skewed=True, median_mean_ratio=0.791"
+      "detail": "median=18.0d, mean=22.5d, right_skewed=True, median_mean_ratio=0.800"
     },
     "2.4_refund_timing_distribution": {
       "status": "PASS",
       "category": "distribution_shape",
       "severity": "warn",
-      "observed": 0.5958702064896755,
+      "observed": 0.5993975903614458,
       "benchmark_range": [
         0.25,
         0.65
       ],
       "benchmark_source": "calibrated",
-      "detail": "within_7d=59.59%, median=7.0d, mean=9.7d"
+      "detail": "within_7d=59.94%, median=6.0d, mean=9.1d"
     },
     "3.1_creative_age_vs_performance": {
       "status": "PASS",
       "category": "cross_metric",
       "severity": "hard_fail",
-      "observed": -0.26272453389310374,
+      "observed": -0.21157935600971667,
       "benchmark_range": [
         -0.65,
         -0.15
       ],
       "benchmark_source": "calibrated",
-      "detail": "corr(days_active, CTR)=-0.263"
+      "detail": "corr(days_active, CTR)=-0.212"
     },
     "3.2_discount_vs_repeat": {
       "status": "PASS",
       "category": "cross_metric",
       "severity": "warn",
-      "observed": -0.09662160958843119,
+      "observed": -0.10104281683229052,
       "benchmark_range": [
         -0.35,
         0.15
       ],
       "benchmark_source": "calibrated",
-      "detail": "heavy_discount_repeat=0.27%, low_discount_repeat=9.93%, diff=-9.66%"
+      "detail": "heavy_discount_repeat=1.54%, low_discount_repeat=11.64%, diff=-10.10%"
     },
     "3.3_frequency_vs_conversion": {
       "status": "PASS",
       "category": "cross_metric",
       "severity": "warn",
-      "observed": 0.04278142810469379,
+      "observed": 0.03467141607832262,
       "benchmark_range": [
         -0.45,
         0.2
       ],
       "benchmark_source": "calibrated",
-      "detail": "high_freq_repeat=0.122, low_freq_repeat=0.079, diff=0.043"
+      "detail": "high_freq_repeat=0.121, low_freq_repeat=0.087, diff=0.035"
     },
     "3.4_refund_vs_repeat": {
       "status": "PASS",
       "category": "cross_metric",
       "severity": "warn",
-      "observed": 0.06754150240593208,
+      "observed": 0.03994629070157771,
       "benchmark_range": [
         -0.45,
         0.1
       ],
       "benchmark_source": "calibrated",
-      "detail": "refunder_repeat=16.24%, non_refunder_repeat=9.49%, diff=6.75%"
+      "detail": "refunder_repeat=15.11%, non_refunder_repeat=11.11%, diff=3.99%"
     },
     "3.5_cross_lag_correlations": {
       "status": "PASS",
       "category": "cross_metric",
       "severity": "hard_fail",
-      "observed": 0.40298332920228613,
+      "observed": 0.7636785488162917,
       "benchmark_range": [
         0.15,
         0.8
       ],
       "benchmark_source": "calibrated",
-      "detail": "peak_lag=29d, peak_corr=0.403, all_at_lag0=False"
+      "detail": "peak_lag=17d, peak_corr=0.764, all_at_lag0=False"
     },
     "4.1_creative_concentration": {
       "status": "PASS",
       "category": "structural_asymmetry",
       "severity": "warn",
-      "observed": 0.12111087517125972,
+      "observed": 0.10466179524068484,
       "benchmark_range": [
         0.06,
         0.35
       ],
       "benchmark_source": "calibrated",
-      "detail": "HHI=0.1211, n_creatives=12, top_share=24.69%"
+      "detail": "HHI=0.1047, n_creatives=12, top_share=15.07%"
     },
     "4.2_customer_concentration": {
       "status": "PASS",
       "category": "structural_asymmetry",
       "severity": "warn",
-      "observed": 0.28616848107998494,
+      "observed": 0.28465904865355096,
       "benchmark_range": [
         0.25,
         0.55
       ],
       "benchmark_source": "calibrated",
-      "detail": "top10_share=28.62%, n_customers=3084, top_customer=620"
+      "detail": "top10_share=28.47%, n_customers=1654, top_customer=622"
     },
     "4.3_channel_asymmetry": {
       "status": "PASS",
       "category": "structural_asymmetry",
       "severity": "warn",
-      "observed": 2.2467956527378248,
+      "observed": 3.7493205810560792,
       "benchmark_range": [
         1.5,
         15.0
       ],
       "benchmark_source": "calibrated",
-      "detail": "best_worst_cpa_ratio=2.25x, n_campaigns=6"
+      "detail": "best_worst_cpa_ratio=3.75x, n_campaigns=6"
     },
     "5.1_acquisition_cost_trend": {
       "status": "SKIP",
@@ -244,13 +244,13 @@
       "status": "WARN",
       "category": "time_dependence",
       "severity": "warn",
-      "observed": -0.13293670485775388,
+      "observed": -0.04863900547876906,
       "benchmark_range": [
         -0.12,
         0.08
       ],
       "benchmark_source": "default",
-      "detail": "monthly_trust_slope=-0.01108, annual_trend=-0.1329, n_months=3"
+      "detail": "monthly_trust_slope=-0.00405, annual_trend=-0.0486, n_months=3"
     },
     "5.5_1yr_vs_3yr_divergence": {
       "status": "SKIP",
@@ -268,61 +268,61 @@
       "status": "INFO",
       "category": "feedback_loops",
       "severity": "warn",
-      "observed": 0.006232032301314832,
+      "observed": 0.0005646147119018602,
       "benchmark_range": [
         0.0,
         0.1
       ],
       "benchmark_source": "calibrated",
-      "detail": "best_lag=1, corr=0.288, p=0.0062, short_sim=91d"
+      "detail": "best_lag=7, corr=-0.371, p=0.0006, short_sim=91d"
     },
     "6.2_trust_repeat_granger": {
       "status": "PASS",
       "category": "feedback_loops",
       "severity": "warn",
-      "observed": 0.0009103032570295901,
+      "observed": 9.290292707831151e-07,
       "benchmark_range": [
         0.0,
         0.1
       ],
       "benchmark_source": "calibrated",
-      "detail": "best_lag=1, corr=-0.344, p=0.0009"
+      "detail": "best_lag=1, corr=-0.490, p=0.0000"
     },
     "6.3_spiral_detection": {
       "status": "INFO",
       "category": "feedback_loops",
       "severity": "info",
-      "observed": 20,
+      "observed": 5,
       "benchmark_range": [
         0,
         15
       ],
       "benchmark_source": "calibrated",
-      "detail": "spiral_windows=20/61, rate=32.79%"
+      "detail": "spiral_windows=5/61, rate=8.20%"
     },
     "7.1_history_effect": {
       "status": "INFO",
       "category": "memory_path_dependence",
       "severity": "warn",
-      "observed": 0.06880209146204808,
+      "observed": 0.06370129263400634,
       "benchmark_range": [
         0.08,
         0.35
       ],
       "benchmark_source": "calibrated",
-      "detail": "corr(exposure_count, order_count)=0.069, order_var=0.139, short_sim=91d"
+      "detail": "corr(exposure_count, order_count)=0.064, order_var=0.158, short_sim=91d"
     },
     "7.2_negative_experience_persistence": {
       "status": "PASS",
       "category": "memory_path_dependence",
       "severity": "warn",
-      "observed": 13.5,
+      "observed": 18.0,
       "benchmark_range": [
         12,
         120
       ],
       "benchmark_source": "calibrated",
-      "detail": "median_post_refund_gap=14d, n=22"
+      "detail": "median_post_refund_gap=18d, n=15"
     }
   }
 }

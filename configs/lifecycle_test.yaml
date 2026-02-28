@@ -13,7 +13,7 @@ creatives: 15
 
 base_ctr: 0.025
 base_conversion: 0.04
-base_refund_rate: 0.07
+base_refund_rate: 0.045
 
 budget_tier: mid
 budget_concentration: 2.0
@@ -43,7 +43,7 @@ population_dynamics:
   pool_expiry_days: 365
 
 lag_structure:
-  trust_ema_weight: 0.70
+  trust_ema_weight: 0.60
   dependency_ema_weight: 0.90
   refund_timing_modes:
     - [5, 2, 0.6]
@@ -61,16 +61,17 @@ momentum:
 feedback_loops:
   enabled: true
   refund_to_trust_sensitivity: 0.3
-  trust_to_repeat_sensitivity: 0.5
+  trust_to_repeat_sensitivity: 0.35
   discount_to_dependency_rate: 0.2
   acquisition_difficulty_growth_rate: 0.001
-  pressure_ramp_rate: 0.008
-  pressure_decay_rate: 0.015
-  pressure_quality_penalty: 0.1
+  pressure_ramp_rate: 0.005
+  pressure_decay_rate: 0.02
+  pressure_quality_penalty: 0.05
   revenue_target_window_days: 30
+  refund_direct_trust_penalty: 0.12
 
 memory:
-  negative_experience_decay_rate: 0.001
+  negative_experience_decay_rate: 0.0005
   positive_experience_decay_rate: 0.005
   ad_fatigue_recovery_rate: 0.01
   brand_memory_decay_after_days: 90

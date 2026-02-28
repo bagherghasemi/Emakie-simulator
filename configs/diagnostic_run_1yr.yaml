@@ -25,7 +25,7 @@ brand_lifecycle:
   enabled: true
   market_size: 50000
   growth_velocity_threshold: 5
-  growth_repeat_stability_cv: 0.5
+  growth_repeat_stability_cv: 0.3
   maturation_penetration_pct: 0.12
   maturation_cpa_rise_pct: 0.35
   saturation_cpa_ltv_ratio: 0.8

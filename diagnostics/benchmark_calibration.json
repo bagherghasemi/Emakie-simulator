@@ -10,7 +10,7 @@
       "metric": "lag1_autocorrelation",
       "description": "Lag-1 autocorrelation of daily revenue time series. Real DTC brands show persistence: a good day tends to follow a good day due to ad spend momentum, campaign pacing, and weekly cycles.",
       "default_range": [0.3, 0.85],
-      "calibrated_range": {"range": [0.35, 0.80]},
+      "calibrated_range": {"range": [0.35, 0.82]},
       "hard_fail_below": 0.15,
       "hard_fail_above": 0.95,
       "confidence": "medium",

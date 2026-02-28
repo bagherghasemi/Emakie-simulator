@@ -9,7 +9,7 @@ simulation:
 num_prospects: 5000
 num_customers: 50
 num_products: 10
-creatives: 15
+creatives: 30
 
 base_ctr: 0.025
 base_conversion: 0.04
@@ -92,8 +92,8 @@ creative_lifecycle:
   novelty_bonus_duration_impressions: 5000
   ramp_end_impressions: 10000
   plateau_duration_impressions: 50000
-  fatigue_half_life_impressions: 100000
-  min_performance_floor: 0.2
+  fatigue_half_life_impressions: 200000
+  min_performance_floor: 0.3
 
 long_term_accumulators:
   ctr_erosion_per_churn: 0.02

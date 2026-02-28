@@ -250,8 +250,8 @@ class BrandState:
         )
 
         # Track launch CPA for comparison in transitions
-        # Collect CPA samples even after LAUNCH ends if baseline not yet established
-        if (self.lifecycle_phase == BrandPhase.LAUNCH or self._launch_cpa_avg is None) and cpa > 0:
+        # Collect CPA samples until baseline is established (stops once avg is computed)
+        if self._launch_cpa_avg is None and cpa > 0:
             self._launch_cpa_samples.append(cpa)
             if len(self._launch_cpa_samples) >= 7:
                 self._launch_cpa_avg = np.mean(self._launch_cpa_samples)
