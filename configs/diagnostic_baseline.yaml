@@ -1,0 +1,22 @@
+# Baseline diagnostic run: 90 days, small population — no new features
+# Used to establish pre-upgrade baseline
+seed: 100
+
+simulation:
+  start_date: "2024-01-01"
+  end_date: "2024-03-31"
+
+num_prospects: 5000
+num_customers: 50
+num_products: 10
+creatives: 15
+
+base_ctr: 0.025
+base_conversion: 0.04
+base_refund_rate: 0.07
+
+budget_tier: mid
+budget_concentration: 2.0
+budget_volatility: 0.25
+cpm: 14.0
+lpv_rate: 0.72

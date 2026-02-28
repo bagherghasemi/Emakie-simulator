@@ -1,0 +1,107 @@
+# Creative fatigue: decent CTR, performance pressure; slightly lower conversion, medium refunds
+seed: 45
+dataset_meta: meta_creative_fatigue
+dataset_shopify: shopify_creative_fatigue
+project_id: shopify-raw-483813
+
+simulation:
+  start_date: "2023-01-01"
+  end_date: "2026-01-01"
+
+num_customers: 550
+num_products: 22
+creatives: 38
+
+base_ctr: 0.026
+base_conversion: 0.035
+base_refund_rate: 0.10
+
+# Budget: mid-tier, uneven pacing (volatility) to reflect fatigue pressure
+budget_tier: mid
+budget_concentration: 1.8
+budget_volatility: 0.35
+cpm: 16.0
+lpv_rate: 0.70
+
+# Brand lifecycle: standard progression, fatigue pressure in later phases
+brand_lifecycle:
+  enabled: true
+  market_size: 400000
+  initial_phase: launch
+  growth_velocity_threshold: 8
+  growth_repeat_stability_cv: 0.3
+  maturation_penetration_pct: 0.18
+  maturation_cpa_rise_pct: 0.45
+  saturation_cpa_ltv_ratio: 0.75
+  decline_repeat_decay_pct: 0.25
+  decline_cpa_multiplier: 1.8
+
+# Population dynamics: standard inflow
+population_dynamics:
+  enabled: true
+  daily_inflow_base: 45
+  inflow_decay_rate: 0.0005
+  quality_drift_rate: 0.0001
+  quality_drift_cap: 0.15
+  pool_expiry_days: 365
+
+lag_structure:
+  trust_ema_weight: 0.85
+  refund_timing_modes:
+    - [5, 2, 0.6]
+    - [18, 5, 0.4]
+
+# Momentum & seasonality
+momentum:
+  enabled: true
+  revenue_autocorrelation: 0.7
+  ctr_autocorrelation: 0.5
+  conversion_autocorrelation: 0.6
+  seasonality:
+    weekly_pattern: [0.85, 0.95, 1.0, 1.0, 1.05, 1.1, 1.05]
+    monthly_pattern: [0.9, 0.85, 0.95, 1.0, 1.0, 0.95, 0.9, 0.9, 1.05, 1.1, 1.15, 1.3]
+
+# Feedback loops
+feedback_loops:
+  enabled: true
+  pressure_ramp_rate: 0.02
+  pressure_decay_rate: 0.01
+  pressure_quality_penalty: 0.1
+  revenue_target_window_days: 30
+
+# Distribution realism: standard
+distribution_realism:
+  enabled: true
+  spending_propensity_sigma: 0.5
+  creative_quality_sigma: 0.5
+
+# Customer memory: standard effects
+memory:
+  brand_memory_decay_after_days: 90
+  brand_memory_decay_rate: 0.005
+  bad_shipping_permanent_penalty: 0.15
+  discount_only_fullprice_penalty: 0.4
+
+# Long-term accumulators: high creative churn erosion (the core problem)
+long_term_accumulators:
+  ctr_erosion_per_churn: 0.04
+  discount_dependency_cvr_penalty: 0.3
+  trust_floor_from_refunds: 0.5
+  exhaustion_cpa_multiplier: 1.5
+
+# Creative lifecycle: fast exhaustion, short plateau — the core problem
+creative_lifecycle:
+  enabled: true
+  novelty_bonus_duration_impressions: 4000
+  ramp_end_impressions: 8000
+  plateau_duration_impressions: 20000
+  fatigue_half_life_impressions: 50000
+  min_performance_floor: 0.15
+
+# Emphasize fatigue: UGC and video decay faster; image/collection more stable.
+creative_type_multipliers:
+  image:     { ctr_multiplier: 1.0,  cvr_multiplier: 1.0,  fatigue_multiplier: 0.12 }
+  video:     { ctr_multiplier: 1.15, cvr_multiplier: 1.05, fatigue_multiplier: 0.35 }
+  carousel:   { ctr_multiplier: 1.05, cvr_multiplier: 1.02, fatigue_multiplier: 0.22 }
+  ugc:       { ctr_multiplier: 1.35, cvr_multiplier: 1.2,  fatigue_multiplier: 0.55 }
+  collection: { ctr_multiplier: 1.0, cvr_multiplier: 1.0,  fatigue_multiplier: 0.06 }

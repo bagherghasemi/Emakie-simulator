@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      scenario:
+        description: Which scenario config to run
+        required: true
+        default: healthy_growth
 
 jobs:
   run:
@@ -33,5 +38,5 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-key.json
         run: |
-          python main.py
-          python loaders/bigquery.py
+          python main.py configs/${{ github.event.inputs.scenario || 'healthy_growth' }}.yaml
+          python loaders/bigquery.py configs/${{ github.event.inputs.scenario || 'healthy_growth' }}.yaml

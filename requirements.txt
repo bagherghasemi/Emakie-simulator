@@ -5,3 +5,4 @@ pyyaml
 pyarrow
 google-cloud-bigquery
 tqdm
+scipy

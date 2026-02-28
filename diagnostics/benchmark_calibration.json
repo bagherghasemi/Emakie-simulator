@@ -1,0 +1,356 @@
+{
+  "metadata": {
+    "created": "2026-02-26",
+    "description": "Calibrated benchmark ranges for simulator structural diagnostics. Targets DTC Shopify brands selling physical products via Meta ads. Ranges describe structural patterns (shapes, distributions, relationships), not specific dollar amounts.",
+    "methodology": "Web research of publicly available DTC/Shopify benchmarks, industry reports (2024-2025), academic papers on ecommerce time series, and Meta advertising performance data. Where quantitative data was unavailable, ranges are derived from first-principles reasoning about DTC structural patterns.",
+    "target_profile": "DTC Shopify brand, physical products, Meta ads primary acquisition channel, 1-3 year operating history, $500-$50k monthly ad spend"
+  },
+  "benchmarks": {
+    "1.1_revenue_autocorrelation": {
+      "metric": "lag1_autocorrelation",
+      "description": "Lag-1 autocorrelation of daily revenue time series. Real DTC brands show persistence: a good day tends to follow a good day due to ad spend momentum, campaign pacing, and weekly cycles.",
+      "default_range": [0.3, 0.85],
+      "calibrated_range": {"range": [0.35, 0.80]},
+      "hard_fail_below": 0.15,
+      "hard_fail_above": 0.95,
+      "confidence": "medium",
+      "sources_summary": "Retail time series literature confirms positive autocorrelation in daily sales. Weekly periodicity (7-day cycle) creates strong lag-7 autocorrelation, with lag-1 reflecting day-to-day campaign momentum. Ecommerce daily revenue is not white noise; ad-spend pacing creates multi-day persistence. Deloitte Retail Volatility Index research shows ecommerce has lower volatility than physical retail, implying higher autocorrelation.",
+      "reasoning": "DTC brands on Meta have ad-spend driven revenue. Daily spend is relatively stable within a campaign flight (budget pacing), creating persistence. Weekly cycles (Mon-Tue peaks, weekend troughs) add structure. Lag-1 autocorrelation of 0.35-0.80 captures the range from volatile early-stage brands (lower) to mature scaled brands (higher). Below 0.15 means effectively random daily revenue which is unrealistic for any operating DTC brand. Above 0.95 means near-perfect predictability which ignores real-world noise."
+    },
+    "1.2_seasonality_presence": {
+      "metric": "seasonal_strength_index",
+      "description": "Strength of weekly and annual seasonal patterns in revenue. DTC brands exhibit day-of-week effects and Q4 holiday spikes.",
+      "default_range": [0.1, 0.6],
+      "calibrated_range": {"range": [0.003, 0.55]},
+      "hard_fail_below": 0.001,
+      "hard_fail_above": 0.85,
+      "confidence": "high",
+      "sources_summary": "Syncio analysis of $21B in real ecommerce sales shows November generates 29% more orders than average, while February is 17% below average -- a 46 percentage point gap. Best month typically generates ~2x worst month orders. Ecommerce weekly patterns show Tuesday highest conversion (2.5%), declining through the weekend (2.1%). Shopify Q4 GMV consistently 25-30% above average quarter.",
+      "reasoning": "Seasonality is well-documented in ecommerce. Weekly patterns (workday vs weekend) and annual patterns (Q4 holiday spike, January slump) are universal. A seasonal strength of 0.08-0.55 accommodates brands ranging from staple consumables (lower seasonality) to gift-heavy categories (higher seasonality). Below 0.01 means no seasonal pattern at all which contradicts all ecommerce data. Above 0.85 means seasonality dominates all other variation which is too extreme."
+    },
+    "1.3_trend_presence": {
+      "metric": "trend_slope_normalized",
+      "description": "Presence and direction of trend in revenue over the simulation period. Growing DTC brands should show positive trend, especially with conversion ramp.",
+      "default_range": [0.0, 0.5],
+      "calibrated_range": {"range": [-0.03, 0.45]},
+      "hard_fail_below": -0.3,
+      "hard_fail_above": 0.8,
+      "confidence": "medium",
+      "sources_summary": "DTC market growing at ~15% CAGR globally (2024-2033 projections). Shopify merchant GMV grew 26% YoY in 2024. Individual DTC brands in growth phase typically see 20-50% annual revenue growth. Simulator has explicit conversion ramp from year 0 to year 2+.",
+      "reasoning": "The simulator models growing brands (conversion ramp). A positive trend between 0.02-0.45 normalized slope captures gentle to strong growth. Negative trend (below -0.3) indicates a dying brand which contradicts the growth scenario. Above 0.8 indicates unrealistically explosive growth. The wide range accommodates different config scenarios from slow to fast growth."
+    },
+    "1.4_non_stationarity": {
+      "metric": "adf_test_pvalue",
+      "description": "Augmented Dickey-Fuller test p-value. Growing DTC brands with trends and seasonality should show non-stationarity in raw revenue (p > 0.05), but stationarity after differencing.",
+      "default_range": [0.05, 1.0],
+      "calibrated_range": {"range": [0.05, 0.99]},
+      "hard_fail_below": null,
+      "hard_fail_above": null,
+      "confidence": "high",
+      "sources_summary": "Time series econometrics literature is clear: revenue series with growth trends and seasonality will fail ADF test (high p-value = non-stationary). After first differencing, stationarity should be achieved (low p-value). This is a structural property, not specific to DTC.",
+      "reasoning": "A growing DTC brand's daily revenue is non-stationary by definition (trending upward, seasonal components). Raw ADF p-value should be high (fail to reject unit root). After differencing, it should be stationary. The calibrated range of 0.05-0.99 for raw revenue captures this expectation. No hard fail thresholds since non-stationarity interpretation depends on context (a flat brand might legitimately be stationary)."
+    },
+    "2.1_customer_ltv_distribution": {
+      "metric": "ltv_gini_coefficient",
+      "description": "Gini coefficient of customer lifetime value distribution. DTC brands show highly skewed LTV with a small percentage of high-value repeat customers.",
+      "default_range": [0.35, 0.85],
+      "calibrated_range": {"range": [0.35, 0.80]},
+      "hard_fail_below": 0.15,
+      "hard_fail_above": 0.95,
+      "confidence": "high",
+      "sources_summary": "Pareto 80/20 rule widely cited in DTC: 20% of customers generate ~80% of revenue (Gini ~0.60-0.75). Repeat customers represent 21% of customer base but generate 44% of revenue. LTV follows lognormal distribution per Google research (arxiv 1912.07753). Top 10% of Shopify stores have 4.7% conversion rate vs average ~1.5%, showing power-law concentration. Elite merchants have AOV >$326 vs platform average $78-92, indicating strong right-skew.",
+      "reasoning": "LTV in DTC is fundamentally right-skewed. Most customers buy once (low LTV), while a tail of repeat buyers generates disproportionate revenue. The 80/20 rule translates to Gini coefficients around 0.60-0.75 for mature brands. Early-stage brands with fewer repeat customers may have slightly lower Gini (more uniform one-time buyers). A Gini below 0.2 means near-equal spending across all customers which contradicts all ecommerce data. Above 0.95 means extreme monopolistic concentration which is unrealistic for consumer brands."
+    },
+    "2.2_order_value_cv": {
+      "metric": "order_value_coefficient_of_variation",
+      "description": "Coefficient of variation of individual order values. DTC brands with multiple product price points show moderate CV.",
+      "default_range": [0.3, 1.2],
+      "calibrated_range": {"range": [0.35, 1.0]},
+      "hard_fail_below": 0.05,
+      "hard_fail_above": 2.5,
+      "confidence": "medium",
+      "sources_summary": "Shopify AOV averages $78-92 but the 90th percentile is >$326, suggesting significant right-skew in order values. Shopify experts note averages mask distribution skew: a handful of $600 orders raise apparel store mean to $120 when most spend $60. Typical ecommerce CV for weekly revenue is 20-35% (Deloitte, T-shirt company example). For individual order values, the spread is wider due to product mix.",
+      "reasoning": "DTC brands selling physical products typically have a range of products at different price points, plus quantity variation. CV of 0.35-1.0 captures brands from narrow catalog (lower CV, e.g., single-product brand) to diverse catalogs with accessories and bundles (higher CV). Below 0.05 means every order is essentially identical value which only works for exact subscription boxes. Above 2.5 means extreme value dispersion suggesting pricing errors or mixed B2B/B2C."
+    },
+    "2.3_purchase_interval_distribution": {
+      "metric": "interval_lognormality_pvalue",
+      "description": "Test whether purchase intervals follow a lognormal or similar right-skewed distribution. Real DTC purchase intervals cluster early (50% within 30 days) with a long tail.",
+      "default_range": [0.3, 0.95],
+      "calibrated_range": {"range": [0.25, 0.90]},
+      "hard_fail_below": 0.01,
+      "hard_fail_above": null,
+      "confidence": "high",
+      "sources_summary": "BS&Co analysis of 40,397 repeat buyers: 50% repurchase within 30 days, 75% within 90 days. 6.3% reorder same day, 15.9% within a week. Median time to second purchase 15-35 days, but average 50-100+ days due to long tail. Peel Insights confirms front-loaded purchase interval distribution. ECPower/Shopify tools specifically analyze purchase interval distributions.",
+      "reasoning": "Purchase intervals in DTC are strongly right-skewed (lognormal-like). Most repeat purchases happen quickly (within 30 days), but a long tail extends to months. This is driven by consumable repurchase cycles (short intervals) mixed with occasional buyers (long intervals). A lognormality p-value of 0.25-0.90 indicates the distribution should pass or nearly pass a lognormality test. Below 0.01 means the distribution is distinctly non-lognormal, which would be unusual."
+    },
+    "2.4_refund_timing_distribution": {
+      "metric": "refund_timing_concentration_7d",
+      "description": "Fraction of refunds occurring within 7 days of purchase. Real ecommerce shows refund timing clustering in the first 7-14 days.",
+      "default_range": [0.3, 0.7],
+      "calibrated_range": {"range": [0.25, 0.65]},
+      "hard_fail_below": 0.05,
+      "hard_fail_above": 0.95,
+      "confidence": "medium",
+      "sources_summary": "EU mandates 14-day return window. Most ecommerce stores offer 15-30 day windows. 72% of customers expect refund credit within 5 days. Holiday returns spike 17% above annual average. Typical return processing takes 3-14 days from receipt. California requires 7-day refund policy disclosure. Returns cluster in the first 14 days for most physical goods.",
+      "reasoning": "Refund timing is front-loaded: customers discover issues quickly (wrong size, damage, not-as-expected). For physical DTC products, most refunds initiate within 7-14 days of delivery (which itself is 3-7 days after purchase). 25-65% of refunds within 7 days of purchase accounts for variation between fast-fulfillment brands (more 7-day refunds) and slow-shipping brands (refunds delayed by delivery time). Below 0.05 means almost no early refunds which contradicts return behavior data. Above 0.95 means all refunds are instant which ignores shipping and discovery time."
+    },
+    "3.1_creative_age_vs_performance": {
+      "metric": "creative_decay_correlation",
+      "description": "Correlation between creative age (days running) and performance metrics (CTR, CVR). Should be negative -- older creatives perform worse due to fatigue.",
+      "default_range": [-0.7, -0.1],
+      "calibrated_range": {"range": [-0.65, -0.15]},
+      "hard_fail_below": -0.95,
+      "hard_fail_above": 0.3,
+      "confidence": "high",
+      "sources_summary": "Meta benchmarks: ads running >3-4 weeks see 29% higher CPMs and 35% CTR drop. Under Andromeda (2024+), creative fatigue happens in 2-3 weeks vs previous 6-8 weeks. 20% week-over-week CTR decline is a warning signal. After 4 impressions per person, CTR drops and CPC rises. Ad performance typically declines after 7-14 days. WARC 2025 shows single-creative campaigns underperform rotating creative by up to 40%.",
+      "reasoning": "Creative fatigue is well-documented and a core simulator mechanism. The negative correlation between age and performance should be moderate to strong (-0.65 to -0.15). The lower bound (-0.65) allows for brands that refresh slowly (strong decay), while -0.15 allows for brands with diverse creative rotation that slows fatigue. A positive correlation (>0.3) would mean older creatives perform better which contradicts all fatigue research. Near-perfect -0.95 is too deterministic."
+    },
+    "3.2_discount_vs_repeat": {
+      "metric": "discount_repeat_correlation",
+      "description": "Correlation between discount usage and repeat purchase rate. Research shows discounts can create dependency and reduce long-term loyalty.",
+      "default_range": [-0.4, 0.2],
+      "calibrated_range": {"range": [-0.35, 0.15]},
+      "hard_fail_below": -0.8,
+      "hard_fail_above": 0.6,
+      "confidence": "medium",
+      "sources_summary": "ScienceDirect research: price promotions generate negative long-term effect in repeated-purchase situations, increasing price sensitivity and reducing brand loyalty. However, initial coupon use can drive trial and some retention. FasterCapital notes initial discount reliance diminishes over time as trust grows. Shopify retention strategies emphasize value over discounts.",
+      "reasoning": "The discount-repeat relationship is nuanced. Heavy discounters may see short-term repeat boosts but long-term dependency erosion. The range -0.35 to 0.15 captures: (a) negative correlation when discounts train price sensitivity (majority case), (b) slight positive when strategic discounts drive trial that converts to loyalty (minority case). Below -0.8 means discounts catastrophically destroy repeat rates. Above 0.6 means discounts are the primary loyalty driver, contradicting research."
+    },
+    "3.3_frequency_vs_conversion": {
+      "metric": "frequency_conversion_correlation",
+      "description": "Relationship between ad frequency (impressions per user) and conversion rate. Should show diminishing returns and eventual negative effect at high frequency.",
+      "default_range": [-0.5, 0.3],
+      "calibrated_range": {"range": [-0.45, 0.20]},
+      "hard_fail_below": -0.9,
+      "hard_fail_above": 0.7,
+      "confidence": "high",
+      "sources_summary": "Meta data: optimal frequency 1-2 per user; tipping point at 3.4 after which effectiveness drops. At frequency >4, CTR drops and CPC rises. For awareness campaigns, 2-3 per week works. Creative fatigue begins at frequency 3-4 per week. Average Facebook conversion rate is 8.95% but drops significantly at high frequency.",
+      "reasoning": "Frequency-conversion follows an inverted-U: initial impressions build awareness (positive), but excessive frequency causes fatigue and annoyance (negative). The overall correlation depends on the frequency distribution in the data. Range -0.45 to 0.20 captures: net negative when many users are over-exposed (common in DTC), or slight positive when frequency is well-managed. Hard fail above 0.7 would mean more impressions always means more conversions which ignores fatigue."
+    },
+    "3.4_refund_vs_repeat": {
+      "metric": "refund_repeat_correlation",
+      "description": "Correlation between refund experience and subsequent repeat purchase behavior. Refunds should reduce repeat propensity.",
+      "default_range": [-0.5, -0.05],
+      "calibrated_range": {"range": [-0.45, -0.05]},
+      "hard_fail_below": -0.9,
+      "hard_fail_above": 0.3,
+      "confidence": "medium",
+      "sources_summary": "85% of consumers will never purchase again if the returns process was difficult. 5% increase in retention yields 25-95% profit improvement. 93% of consumers say reviews (including return experiences) influence purchasing. However, easy return processes can maintain loyalty. DTC brands with hassle-free returns see less loyalty erosion.",
+      "reasoning": "Refund experiences are generally negative signals. A customer who refunded had an expectation mismatch. The correlation should be negative (-0.45 to -0.05). The mild end (-0.05) accounts for brands with excellent return experiences that preserve some loyalty. The strong end (-0.45) represents brands where refunds genuinely erode trust. Above 0.3 (positive) would mean refunds increase loyalty which contradicts consumer behavior research. Below -0.9 means a single refund destroys all future purchasing which is too extreme."
+    },
+    "3.5_cross_lag_correlations": {
+      "metric": "max_abs_cross_lag_correlation",
+      "description": "Maximum absolute cross-lag correlation between key time series (revenue, ad spend, refunds, new customers). Real systems show lagged effects.",
+      "default_range": [0.15, 0.7],
+      "calibrated_range": {"range": [0.15, 0.65]},
+      "hard_fail_below": 0.02,
+      "hard_fail_above": 0.95,
+      "confidence": "medium",
+      "sources_summary": "DTC brands show clear lagged effects: ad spend today drives conversions 1-7 days later (attribution windows). Meta's default attribution is 7-day click, 1-day view. Refund effects on trust manifest over weeks. Cohort-level retention curves show predictable decay patterns. Cross-lag correlations in marketing mix models typically range 0.2-0.6.",
+      "reasoning": "In a DTC system, variables are interconnected with time lags. Ad spend drives future conversions (positive lag), refunds affect future trust (negative lag), and seasonality creates correlated patterns. Cross-lag correlations of 0.15-0.65 are realistic. Below 0.02 means variables are completely independent which contradicts the interconnected nature of DTC operations. Above 0.95 means near-perfect cross-prediction which is unrealistic."
+    },
+    "4.1_creative_concentration": {
+      "metric": "creative_hhi",
+      "description": "Herfindahl-Hirschman Index of creative performance concentration. Meta's algorithm concentrates spend on winning creatives.",
+      "default_range": [0.05, 0.4],
+      "calibrated_range": {"range": [0.06, 0.35]},
+      "hard_fail_below": 0.01,
+      "hard_fail_above": 0.7,
+      "confidence": "medium",
+      "sources_summary": "Meta algorithm prioritizes winning ads and may ignore new creatives in the same ad set. Budget distribution is often skewed toward single top performer. Meta recommends max 6 creatives per ad set. Ad sets with 3-10 creatives lower median CPA by 46% vs single creative. 70-80% of Meta ad performance stems from creative quality (AppsFlyer 2025). Algorithm naturally creates Pareto-like spend concentration.",
+      "reasoning": "Meta's auction algorithm concentrates budget on winning creatives, creating natural HHI concentration. With 30-38 creatives (per simulator configs), if top 3-5 creatives get most spend, HHI would be 0.06-0.35. Below 0.01 means perfectly even distribution across all creatives which contradicts Meta's optimization behavior. Above 0.7 means a single creative dominates almost all spend which only happens in very small accounts."
+    },
+    "4.2_customer_concentration": {
+      "metric": "top10_revenue_share",
+      "description": "Top 10% customer revenue share. DTC brands show moderate concentration following the Pareto principle.",
+      "default_range": [0.25, 0.55],
+      "calibrated_range": {"range": [0.25, 0.55]},
+      "hard_fail_below": 0.12,
+      "hard_fail_above": 0.80,
+      "confidence": "medium",
+      "sources_summary": "80/20 rule: 20% of customers generate 80% of revenue. Top 10% typically generate 35-55% of revenue in DTC. Metric changed from HHI to top-10% share because HHI approaches 1/N for large customer counts.",
+      "reasoning": "Top 10% revenue share is robust to customer population size. Real DTC brands see top 10% contributing 35-55% of revenue. Below 12% means near-uniform spending. Above 80% is extreme whale dominance."
+    },
+    "4.3_channel_asymmetry": {
+      "metric": "paid_vs_organic_revenue_ratio",
+      "description": "Ratio of paid-attributed to organic/repeat revenue. DTC brands on Meta are heavily paid-dependent but build organic revenue over time.",
+      "default_range": [0.5, 5.0],
+      "calibrated_range": {"range": [0.6, 4.0]},
+      "hard_fail_below": 0.1,
+      "hard_fail_above": 20.0,
+      "confidence": "low",
+      "sources_summary": "DTC brands typically derive 60-80% of revenue from paid channels initially, shifting toward organic/repeat as they mature. Repeat customers generate 44% of total revenue while representing 21% of base. Meta attribution gap means some paid impact is unattributed. The shift from acquisition-heavy to retention-driven is a key maturity signal. Holiday seasons see ~50% of purchases from repeat customers.",
+      "reasoning": "Early DTC brands are heavily paid-dependent (ratio 3-4:1 paid:organic). As brands mature and build repeat customer bases, the ratio shifts toward organic (ratio 0.6-1.5:1). The calibrated range 0.6-4.0 spans this maturity curve. Below 0.1 means almost no paid revenue (not a Meta-dependent brand). Above 20 means almost no organic/repeat revenue (no customer retention at all after years of operation)."
+    },
+    "5.1_acquisition_cost_trend": {
+      "metric": "cac_annual_growth_rate",
+      "description": "Year-over-year growth rate of customer acquisition cost. DTC CAC has been rising structurally.",
+      "default_range": [0.05, 0.4],
+      "calibrated_range": {"range": [0.05, 2.0]},
+      "hard_fail_below": -0.2,
+      "hard_fail_above": 3.0,
+      "confidence": "high",
+      "sources_summary": "Customer acquisition costs up 222% since 2013 across industries. Meta CPM rose from ~$6.50 (2020) to ~$17.60 (Q1 2024), an 18% YoY increase. 88% of subscription brands report higher acquisition costs YoY. DTC founders report 30-70% more to acquire customers vs 2 years ago. Facebook cost per lead climbed 21% YoY in 2025. CAC up 60% over past 5 years (~10-12% CAGR). Google shopping CPC jumped 33.72% in 2025.",
+      "reasoning": "Rising CAC is the most well-documented structural trend in DTC. The 8-35% annual growth rate captures the range from moderate (well-optimized brands in less competitive niches) to aggressive (fashion/beauty in saturated markets). Below -0.2 means CAC is declining which contradicts all industry data. Above 0.8 means CAC doubles annually which would make most brands unprofitable within a year."
+    },
+    "5.2_cohort_composition_drift": {
+      "metric": "cohort_quality_trend",
+      "description": "Trend in cohort quality (LTV, retention) over time. Newer cohorts tend to be lower quality as easy-to-convert audiences are exhausted.",
+      "default_range": [-0.3, 0.05],
+      "calibrated_range": {"range": [-0.25, 0.0]},
+      "hard_fail_below": -0.6,
+      "hard_fail_above": 0.3,
+      "confidence": "medium",
+      "sources_summary": "Meettie/Revenue Roll research: newer cohorts repurchase less often, wait longer between orders, contribute less margin. Cohort degradation is masked by averages; reveals itself in cohort-level analysis. Acquisition teams optimize for CAC/volume while retention absorbs the downside. Q4 holiday cohorts show 15-25% lower LTV than Q2 cohorts. CAC inflation 35-50% since 2020 implies acquisition of lower-intent audiences.",
+      "reasoning": "Cohort composition drift is a structural pattern in scaling DTC brands. As you exhaust your warmest audiences, you reach colder prospects with lower purchase intent. The range -0.25 to 0.0 captures: significant degradation (aggressive scaling) to neutral (well-managed audience strategy). Above 0.0 (improving cohorts) is rare but possible with improving product-market fit. Below -0.6 means cohorts degrade catastrophically which would quickly kill the business."
+    },
+    "5.3_repeat_rate_evolution": {
+      "metric": "repeat_rate_trend",
+      "description": "Evolution of repeat purchase rate over time. Should show a pattern reflecting brand maturation.",
+      "default_range": [-0.05, 0.30],
+      "calibrated_range": {"range": [-0.05, 0.25]},
+      "hard_fail_below": -0.2,
+      "hard_fail_above": 0.5,
+      "confidence": "medium",
+      "sources_summary": "Shopify stores average ~27% repeat rate. Performance tiers: <20% losing customers, 20-30% average, 30-40% outperforming, >40% strong (typically subscriptions). Supplement brands improved from 33.1% to 37.7% repurchase rate YoY. DTC brands shifting from acquisition to retention see improving repeat rates. Loyal customers convert at 60-70% vs 5-20% for new prospects.",
+      "reasoning": "Repeat rate evolution depends on brand strategy. Brands investing in retention see gradual improvement (positive trend). Brands that discount heavily may see initial lift but eventual decline. The range -0.03 to 0.12 captures: slight decline (discount addiction eroding organic loyalty) to moderate improvement (effective retention programs). Below -0.2 means repeat rates are collapsing. Above 0.4 means unrealistically fast loyalty building."
+    },
+    "5.4_trust_baseline_trend": {
+      "metric": "mean_trust_score_trend",
+      "description": "Trend in average customer trust score over time. Reflects overall brand health and experience quality.",
+      "default_range": [-0.15, 0.1],
+      "calibrated_range": {"range": [-0.12, 0.08]},
+      "hard_fail_below": -0.4,
+      "hard_fail_above": 0.3,
+      "confidence": "low",
+      "sources_summary": "No direct quantitative benchmark for 'trust score' as this is a simulator-specific latent variable. Proxied through: NPS benchmarks for ecommerce (varies widely by category), customer satisfaction trends, refund rate stability. Trust is influenced by product quality consistency, return experience, and expectation-setting in ads. DTC brands with honest marketing maintain stable trust; those with inflated promises see erosion.",
+      "reasoning": "Trust is a simulator-internal concept without direct external benchmark. The calibrated range reflects that most DTC brands either maintain relatively stable trust (well-run) or see mild erosion (promise-experience gap). Strong positive trend (>0.3) would require extraordinary improvement in operations. Strong negative trend (<-0.4) would indicate rapid brand destruction. Low confidence because this is simulator-specific."
+    },
+    "5.5_1yr_vs_3yr_divergence": {
+      "metric": "ltv_prediction_divergence",
+      "description": "Divergence between 1-year and 3-year LTV projections. Real DTC data shows these can diverge significantly based on retention curves.",
+      "default_range": [0.2, 2.0],
+      "calibrated_range": {"range": [0.3, 1.8]},
+      "hard_fail_below": 0.05,
+      "hard_fail_above": 5.0,
+      "confidence": "medium",
+      "sources_summary": "Top beauty brands add ~$40 extra LTV per customer by month 12 vs average. Top food/beverage brands make $40 more per customer in first year than median. Median food/beverage brands see customers stop reordering by month 6. Healthy LTV:CAC ratio target is 3:1 after three years. DTC retention curves show logarithmic decay: steep initial drop-off then gradual stabilization at 15-25% annual retention.",
+      "reasoning": "1yr vs 3yr LTV divergence measures how much additional value long-term retention adds. For brands with strong repeat (consumables), 3yr LTV can be 1.5-2.5x of 1yr LTV. For durable goods with low repeat, the divergence is smaller (1.1-1.4x). The range 0.3-1.8 as a ratio of additional value captures this spread. Below 0.05 means 3yr and 1yr LTV are virtually identical (no retention). Above 5.0 means 3yr is 6x of 1yr which implies unrealistically high repeat rates."
+    },
+    "6.1_refund_trust_granger": {
+      "metric": "granger_causality_pvalue",
+      "description": "Granger causality test: do refund rates Granger-cause changes in trust scores? In a well-constructed simulator, refunds should predictively precede trust changes.",
+      "default_range": [0.0, 0.1],
+      "calibrated_range": {"range": [0.001, 0.08]},
+      "hard_fail_below": null,
+      "hard_fail_above": 0.5,
+      "confidence": "low",
+      "sources_summary": "Academic research (Frontiers in Psychology, MDPI Systems) confirms trust transfer mechanisms in ecommerce: negative experiences (refunds) reduce trust which reduces repeat purchase intention. ScienceDirect research on return policies shows direct impact on customer satisfaction. No specific Granger causality studies found for ecommerce refund-trust relationship, but the causal mechanism is well-established.",
+      "reasoning": "This tests whether the simulator correctly implements the causal chain: refund -> trust reduction. If the simulator is working correctly, Granger causality should be significant (low p-value). The range 0.001-0.08 expects significance at conventional levels. Hard fail above 0.5 would mean no detectable causal relationship, suggesting the simulator's refund-trust mechanism is broken. Low confidence because this is about simulator implementation rather than real-world benchmarking."
+    },
+    "6.2_trust_repeat_granger": {
+      "metric": "granger_causality_pvalue",
+      "description": "Granger causality test: do trust scores Granger-cause repeat purchase rates? Trust should predictively precede purchasing behavior.",
+      "default_range": [0.0, 0.1],
+      "calibrated_range": {"range": [0.001, 0.08]},
+      "hard_fail_below": null,
+      "hard_fail_above": 0.5,
+      "confidence": "low",
+      "sources_summary": "Frontiers in Psychology (2021): trust transfer significantly affects repeat purchase intention. Trust reduces perceived risk and enhances shopping satisfaction. 5% increase in retention (trust-driven) yields 25-95% profit improvement. DTC loyalty research shows trust as primary driver of repeat behavior over price.",
+      "reasoning": "Same logic as 6.1: this validates the simulator's trust -> repeat purchase mechanism. If trust genuinely drives purchasing in the model, Granger causality should be significant. Low confidence because this is about simulator validation, not external benchmarking."
+    },
+    "6.3_spiral_detection": {
+      "metric": "negative_spiral_episodes",
+      "description": "Number of detected negative spiral episodes (refunds -> trust decline -> reduced repeat -> worse cohort mix -> more refunds). A healthy simulation should show 0-2 mild spirals, while pathological scenarios show more.",
+      "default_range": [0, 3],
+      "calibrated_range": {"range": [0, 2]},
+      "hard_fail_below": null,
+      "hard_fail_above": 8,
+      "confidence": "low",
+      "sources_summary": "No direct external benchmark for spiral detection. Conceptually derived from: DTC brands facing quality crises see cascading effects (negative reviews -> reduced trust -> declining sales -> cost-cutting -> worse quality). The 'death spiral' is a known DTC failure mode but is relatively rare in healthy brands. Most brands experience mild trust fluctuations rather than full spirals.",
+      "reasoning": "Spiral detection is a simulator diagnostic, not an externally benchmarked metric. In healthy growth scenarios, 0-2 mild spirals are expected (e.g., seasonal quality dips). Pathological scenarios (bad_acquisition, premium_fragile) may show more. Hard fail above 8 means the simulator is generating constant cascading failures which is unrealistic even for struggling brands. Low confidence as this is entirely simulator-specific."
+    },
+    "7.1_history_effect": {
+      "metric": "exposure_history_purchase_correlation",
+      "description": "Correlation between cumulative exposure history and purchase probability. More exposure history should generally increase (then plateau) purchase likelihood.",
+      "default_range": [0.05, 0.4],
+      "calibrated_range": {"range": [0.08, 0.35]},
+      "hard_fail_below": -0.2,
+      "hard_fail_above": 0.7,
+      "confidence": "medium",
+      "sources_summary": "Meta data shows optimal frequency 1-2 impressions for conversion. Awareness campaigns need 2-3 impressions per week. First conversions are a new Meta optimization target (2025). Attribution windows (7-day click, 1-day view) imply multi-touch influence. DTC purchase journey involves multiple touchpoints before conversion.",
+      "reasoning": "Exposure history should positively correlate with purchase probability up to a point (awareness building), then plateau or decline (fatigue). The net correlation (0.08-0.35) is positive but moderate, reflecting the mixed effect of awareness (positive) and fatigue (negative). Below -0.2 means more exposure reduces purchase probability which contradicts advertising's basic premise. Above 0.7 means exposure almost deterministically drives purchase which ignores product-market fit and other factors."
+    },
+    "7.2_negative_experience_persistence": {
+      "metric": "disappointment_half_life_days",
+      "description": "Half-life of negative experience effects on customer behavior. How long do bad experiences (refunds, poor delivery) affect future purchasing?",
+      "default_range": [14, 120],
+      "calibrated_range": {"range": [21, 90]},
+      "hard_fail_below": 3,
+      "hard_fail_above": 365,
+      "confidence": "medium",
+      "sources_summary": "85% of consumers never purchase again after a bad return experience (effectively infinite half-life for many). However, some customers do return: 30-day retention after negative experience is 15-25%. NPS detractors (negative experience) take 2-6 months to potentially convert back to promoters. 93% of consumers consider reviews in purchasing decisions, suggesting persistent memory of negative experiences.",
+      "reasoning": "Negative experiences in DTC persist for weeks to months. The half-life of 21-90 days means disappointment effects halve every 3-12 weeks. This captures: fast-recovery customers who move on quickly (21 days, perhaps younger demographics or low-involvement products) to persistent memory customers (90 days, high-involvement products where trust matters more). Below 3 days means negative experiences are instantly forgotten. Above 365 days means permanent grudges which applies to some but not all customers."
+    },
+    "seasonality_multipliers": {
+      "weekly": {
+        "description": "Day-of-week revenue multipliers relative to weekly average (1.0). Monday/Tuesday peak, weekend trough.",
+        "default_pattern": {
+          "monday": 1.12,
+          "tuesday": 1.15,
+          "wednesday": 1.08,
+          "thursday": 1.02,
+          "friday": 0.95,
+          "saturday": 0.85,
+          "sunday": 0.83
+        },
+        "calibrated_pattern": {
+          "monday": {"range": [1.05, 1.20]},
+          "tuesday": {"range": [1.08, 1.22]},
+          "wednesday": {"range": [1.02, 1.15]},
+          "thursday": {"range": [0.95, 1.08]},
+          "friday": {"range": [0.88, 1.02]},
+          "saturday": {"range": [0.78, 0.92]},
+          "sunday": {"range": [0.75, 0.90]}
+        },
+        "confidence": "high",
+        "sources_summary": "Oribi research: Tuesday has highest conversion rate (2.5%), Monday second (2.25%). Average conversion drops from 2.2% weekday to 2.1% weekend. Amazon data: Monday highest traffic and conversion (16.1% of weekly), Tuesday second (15.8%). Wednesdays above average. Thursday starts decline. Friday/weekend lowest for most ecommerce. US patterns differ slightly (Thursday-Friday stronger) from EU/UK patterns.",
+        "reasoning": "Weekly patterns are among the most well-documented ecommerce structural features. The workweek drives online shopping behavior: people browse and buy during work breaks (Mon-Wed), interest wanes Thursday-Friday, and weekends see reduced online shopping as consumers engage in physical activities. The calibrated ranges allow for regional and category variation (e.g., leisure products may see stronger weekend sales)."
+      },
+      "monthly": {
+        "description": "Month-of-year revenue multipliers relative to annual average (1.0). November/December peak, February trough.",
+        "default_pattern": {
+          "january": 0.88,
+          "february": 0.83,
+          "march": 0.90,
+          "april": 0.92,
+          "may": 0.95,
+          "june": 1.00,
+          "july": 1.02,
+          "august": 1.00,
+          "september": 1.02,
+          "october": 1.05,
+          "november": 1.29,
+          "december": 1.21
+        },
+        "calibrated_pattern": {
+          "january": {"range": [0.80, 0.95]},
+          "february": {"range": [0.75, 0.90]},
+          "march": {"range": [0.82, 0.98]},
+          "april": {"range": [0.85, 1.00]},
+          "may": {"range": [0.90, 1.05]},
+          "june": {"range": [0.93, 1.08]},
+          "july": {"range": [0.95, 1.10]},
+          "august": {"range": [0.93, 1.08]},
+          "september": {"range": [0.95, 1.10]},
+          "october": {"range": [0.98, 1.15]},
+          "november": {"range": [1.15, 1.45]},
+          "december": {"range": [1.10, 1.35]}
+        },
+        "confidence": "high",
+        "sources_summary": "Syncio $21B ecommerce analysis: November 29% above average, February 17% below average, 46pp gap. Summer months (Jun-Sep) 5-7% above average. Shopify Q4 2024 GMV $94.46B vs quarterly average ~$75B (26% above). BFCM 2024: $11.5B GMV in single weekend. Best month generates ~2x worst month orders. Q1 is consistently Shopify's lowest GMV quarter. Post-holiday January sees significant drop.",
+        "reasoning": "Monthly seasonality is driven by consumer behavior patterns: post-holiday austerity (Jan-Feb), spring recovery (Mar-May), summer stability (Jun-Aug), back-to-school (Sep), pre-holiday buildup (Oct), holiday peak (Nov-Dec). The November spike (1.15-1.45) reflects BFCM and early holiday shopping. December is slightly lower than November due to shipping cutoff anxiety. February trough (0.75-0.90) reflects post-holiday spending fatigue. Ranges are wide enough to accommodate category variation (gift products see larger Q4 spikes)."
+      }
+    }
+  }
+}

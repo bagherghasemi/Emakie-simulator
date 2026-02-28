@@ -1,51 +1,54 @@
-# Healthy growth: moderate CTR, good conversion, low refund
-seed: 42
-dataset_meta: meta_healthy_growth
-dataset_shopify: shopify_healthy_growth
+# Silent churn: normal acquisition, low refund; weak future value (loyalty driven by customer mix/seed)
+seed: 47
+dataset_meta: meta_silent_churn
+dataset_shopify: shopify_silent_churn
 project_id: shopify-raw-483813
 
 simulation:
   start_date: "2023-01-01"
   end_date: "2026-01-01"
 
-num_customers: 600
-num_products: 25
-creatives: 35
+num_customers: 580
+num_products: 23
+creatives: 32
 
-base_ctr: 0.025
-base_conversion: 0.045
-base_refund_rate: 0.04
+base_ctr: 0.024
+base_conversion: 0.038
+base_refund_rate: 0.05
 
-# Budget hierarchy: mid-tier, even splits, moderate pacing noise
+# Budget: normal mid-tier, stable pacing
 budget_tier: mid
 budget_concentration: 2.0
 budget_volatility: 0.25
-cpm: 14.0
+cpm: 15.0
 lpv_rate: 0.72
 
-# Brand lifecycle: standard progression, should reach MATURATION by ~month 18
+# Brand lifecycle: normal progression but weak repeat in later phases
 brand_lifecycle:
   enabled: true
-  market_size: 500000
+  market_size: 400000
   initial_phase: launch
   growth_velocity_threshold: 8
   growth_repeat_stability_cv: 0.3
-  maturation_penetration_pct: 0.15
-  maturation_cpa_rise_pct: 0.40
+  maturation_penetration_pct: 0.18
+  maturation_cpa_rise_pct: 0.50
   saturation_cpa_ltv_ratio: 0.8
-  decline_repeat_decay_pct: 0.30
+  decline_repeat_decay_pct: 0.25
   decline_cpa_multiplier: 2.0
+  phase_effects:
+    maturation: {ctr_mult: 0.95, cvr_mult: 1.05, refund_mult: 0.90, repeat_mult: 1.1, cpa_mult: 1.2}
+    saturation: {ctr_mult: 0.85, cvr_mult: 0.80, refund_mult: 1.0, repeat_mult: 0.8, cpa_mult: 1.5}
+    decline:    {ctr_mult: 0.75, cvr_mult: 0.65, refund_mult: 1.2, repeat_mult: 0.5, cpa_mult: 1.7}
 
-# Population dynamics: moderate inflow, standard drift
+# Population dynamics: normal inflow, subtle drift
 population_dynamics:
   enabled: true
-  daily_inflow_base: 50
-  inflow_decay_rate: 0.0005
-  quality_drift_rate: 0.0001
+  daily_inflow_base: 40
+  inflow_decay_rate: 0.0004
+  quality_drift_rate: 0.0002
   quality_drift_cap: 0.15
   pool_expiry_days: 365
 
-# Lag structure: EMA trust smoothing, bimodal refund timing
 lag_structure:
   trust_ema_weight: 0.85
   refund_timing_modes:
@@ -66,8 +69,8 @@ momentum:
 feedback_loops:
   enabled: true
   pressure_ramp_rate: 0.02
-  pressure_decay_rate: 0.01
-  pressure_quality_penalty: 0.1
+  pressure_decay_rate: 0.012
+  pressure_quality_penalty: 0.08
   revenue_target_window_days: 30
 
 # Distribution realism: standard heterogeneity
@@ -76,14 +79,21 @@ distribution_realism:
   spending_propensity_sigma: 0.5
   creative_quality_sigma: 0.4
 
-# Customer memory: standard balanced memory effects
+# Customer memory: fast brand decay (brand forgotten quickly), moderate shipping penalty
 memory:
-  brand_memory_decay_after_days: 90
-  brand_memory_decay_rate: 0.005
+  brand_memory_decay_after_days: 60
+  brand_memory_decay_rate: 0.010
   bad_shipping_permanent_penalty: 0.15
   discount_only_fullprice_penalty: 0.4
 
-# Creative lifecycle: standard progression, healthy creative rotation
+# Long-term accumulators: standard; churn driven by memory/population dynamics
+long_term_accumulators:
+  ctr_erosion_per_churn: 0.02
+  discount_dependency_cvr_penalty: 0.3
+  trust_floor_from_refunds: 0.5
+  exhaustion_cpa_multiplier: 1.5
+
+# Creative lifecycle: standard, nothing unusual here — churn is elsewhere
 creative_lifecycle:
   enabled: true
   novelty_bonus_duration_impressions: 5000
@@ -92,14 +102,7 @@ creative_lifecycle:
   fatigue_half_life_impressions: 100000
   min_performance_floor: 0.2
 
-# Long-term accumulators: standard values
-long_term_accumulators:
-  ctr_erosion_per_churn: 0.02
-  discount_dependency_cvr_penalty: 0.3
-  trust_floor_from_refunds: 0.5
-  exhaustion_cpa_multiplier: 1.5
-
-# Creative-type behavioral multipliers (CTR, CVR, fatigue). Defaults; stable growth.
+# Normal acquisition; default creative-type behavior (loyalty/churn driven elsewhere).
 creative_type_multipliers:
   image:     { ctr_multiplier: 1.0,  cvr_multiplier: 1.0,  fatigue_multiplier: 0.10 }
   video:     { ctr_multiplier: 1.2,  cvr_multiplier: 1.1,  fatigue_multiplier: 0.20 }
