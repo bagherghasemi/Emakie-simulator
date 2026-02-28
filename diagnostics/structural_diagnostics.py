@@ -967,10 +967,13 @@ def check_5_2_cohort_composition_drift(orders_df: pd.DataFrame, sim_days: int) -
     elif p_value > 0.10:
         result["status"] = "WARN"
         result["detail"] += " → Borderline drift significance"
-    elif -0.25 <= direction <= 0.05:
-        result["status"] = "PASS"
     else:
-        result["status"] = "WARN"
+        # Use calibrated range from benchmark; direction must be within range
+        lo, hi = _get_range(check_id)
+        if lo <= direction <= hi:
+            result["status"] = "PASS"
+        else:
+            result["status"] = "WARN"
     return result
 
 

@@ -1192,7 +1192,7 @@ def main() -> None:
 
         # Upgrade 1: Update brand lifecycle state from today's metrics
         n_repeat_orders = len(repeat_orders_df) if not repeat_orders_df.empty else 0
-        n_new_customers = len(new_customers_df) if not new_customers_df.empty else 0
+        n_new_customers = (len(new_customers_df) if not new_customers_df.empty else 0) + (len(cart_ret_new_cust) if not cart_ret_new_cust.empty else 0)
         day_revenue = float(orders_df["total_price"].sum()) if not orders_df.empty and "total_price" in orders_df.columns else 0.0
         day_spend = float(performance_df["spend"].sum()) if not performance_df.empty and "spend" in performance_df.columns else 0.0
         discount_orders_count = int((orders_df["total_discounts"].fillna(0) > 0).sum()) if not orders_df.empty and "total_discounts" in orders_df.columns else 0

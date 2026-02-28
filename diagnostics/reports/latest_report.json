@@ -1,8 +1,8 @@
 {
-  "run_id": "diag_20260228_192431",
+  "run_id": "diag_20260301_002126",
   "sim_duration_days": 91,
-  "population_size": 1614,
-  "timestamp": "2026-02-28T19:24:31.853815",
+  "population_size": 2130,
+  "timestamp": "2026-03-01T00:21:26.088674",
   "overall_pass": true,
   "summary": {
     "PASS": 16,
@@ -16,193 +16,193 @@
       "status": "PASS",
       "category": "temporal_structure",
       "severity": "hard_fail",
-      "observed": 0.8035045644369921,
+      "observed": 0.6919256958670956,
       "benchmark_range": [
         0.35,
         0.82
       ],
       "benchmark_source": "calibrated",
-      "detail": "lag1=0.804, lag7=0.763, lag30=0.369"
+      "detail": "lag1=0.692, lag7=0.586, lag30=0.129"
     },
     "1.2_seasonality_presence": {
       "status": "PASS",
       "category": "temporal_structure",
       "severity": "warn",
-      "observed": 0.036498232797745375,
+      "observed": 0.024186381966669515,
       "benchmark_range": [
         0.003,
         0.55
       ],
       "benchmark_source": "calibrated",
-      "detail": "seasonal_strength=0.036, peak_period=91.0d"
+      "detail": "seasonal_strength=0.024, peak_period=91.0d"
     },
     "1.3_trend_presence": {
       "status": "INFO",
       "category": "temporal_structure",
       "severity": "hard_fail",
-      "observed": -0.6035040717155314,
+      "observed": -0.4365897973192567,
       "benchmark_range": [
         -0.2,
         0.45
       ],
       "benchmark_source": "calibrated",
-      "detail": "normalized_slope=-0.6035, raw_slope=-35543.32/month, short_sim=91d"
+      "detail": "normalized_slope=-0.4366, raw_slope=-29795.61/month, short_sim=91d"
     },
     "1.4_non_stationarity": {
       "status": "INFO",
       "category": "temporal_structure",
       "severity": "info",
-      "observed": 0.0027469047893663784,
+      "observed": 8.669276338743508e-05,
       "benchmark_range": [
         0.05,
         0.99
       ],
       "benchmark_source": "calibrated",
-      "detail": "ADF p-value=0.0027"
+      "detail": "ADF p-value=0.0001"
     },
     "2.1_customer_ltv_distribution": {
       "status": "PASS",
       "category": "distribution_shape",
       "severity": "hard_fail",
-      "observed": 0.36227230314540715,
+      "observed": 0.3510758720605447,
       "benchmark_range": [
         0.35,
         0.8
       ],
       "benchmark_source": "calibrated",
-      "detail": "gini=0.362, skewness=2.22, top10_share=28.47%"
+      "detail": "gini=0.351, skewness=2.27, top10_share=27.25%"
     },
     "2.2_order_value_cv": {
       "status": "PASS",
       "category": "distribution_shape",
       "severity": "warn",
-      "observed": 0.822547351641154,
+      "observed": 0.8012679832288496,
       "benchmark_range": [
         0.35,
-        1.0
+        1.05
       ],
       "benchmark_source": "calibrated",
-      "detail": "CV=0.823, mean=$94.03, std=$77.35"
+      "detail": "CV=0.801, mean=$83.09, std=$66.58"
     },
     "2.3_purchase_interval_distribution": {
       "status": "PASS",
       "category": "distribution_shape",
       "severity": "warn",
-      "observed": 0.7996709173179761,
+      "observed": 0.7718852161278604,
       "benchmark_range": [
         0.25,
         0.9
       ],
       "benchmark_source": "calibrated",
-      "detail": "median=18.0d, mean=22.5d, right_skewed=True, median_mean_ratio=0.800"
+      "detail": "median=17.0d, mean=22.0d, right_skewed=True, median_mean_ratio=0.772"
     },
     "2.4_refund_timing_distribution": {
       "status": "PASS",
       "category": "distribution_shape",
       "severity": "warn",
-      "observed": 0.5993975903614458,
+      "observed": 0.5578093306288032,
       "benchmark_range": [
         0.25,
         0.65
       ],
       "benchmark_source": "calibrated",
-      "detail": "within_7d=59.94%, median=6.0d, mean=9.1d"
+      "detail": "within_7d=55.78%, median=7.0d, mean=9.9d"
     },
     "3.1_creative_age_vs_performance": {
       "status": "PASS",
       "category": "cross_metric",
       "severity": "hard_fail",
-      "observed": -0.21157935600971667,
+      "observed": -0.16986582578236606,
       "benchmark_range": [
         -0.65,
         -0.15
       ],
       "benchmark_source": "calibrated",
-      "detail": "corr(days_active, CTR)=-0.212"
+      "detail": "corr(days_active, CTR)=-0.170"
     },
     "3.2_discount_vs_repeat": {
       "status": "PASS",
       "category": "cross_metric",
       "severity": "warn",
-      "observed": -0.10104281683229052,
+      "observed": -0.08033844478026403,
       "benchmark_range": [
         -0.35,
         0.15
       ],
       "benchmark_source": "calibrated",
-      "detail": "heavy_discount_repeat=1.54%, low_discount_repeat=11.64%, diff=-10.10%"
+      "detail": "heavy_discount_repeat=1.30%, low_discount_repeat=9.33%, diff=-8.03%"
     },
     "3.3_frequency_vs_conversion": {
       "status": "PASS",
       "category": "cross_metric",
       "severity": "warn",
-      "observed": 0.03467141607832262,
+      "observed": 0.05585251273143578,
       "benchmark_range": [
         -0.45,
-        0.2
+        0.3
       ],
       "benchmark_source": "calibrated",
-      "detail": "high_freq_repeat=0.121, low_freq_repeat=0.087, diff=0.035"
+      "detail": "high_freq_repeat=0.133, low_freq_repeat=0.077, diff=0.056"
     },
     "3.4_refund_vs_repeat": {
       "status": "PASS",
       "category": "cross_metric",
       "severity": "warn",
-      "observed": 0.03994629070157771,
+      "observed": 0.04757784645768351,
       "benchmark_range": [
         -0.45,
         0.1
       ],
       "benchmark_source": "calibrated",
-      "detail": "refunder_repeat=15.11%, non_refunder_repeat=11.11%, diff=3.99%"
+      "detail": "refunder_repeat=14.26%, non_refunder_repeat=9.50%, diff=4.76%"
     },
     "3.5_cross_lag_correlations": {
       "status": "PASS",
       "category": "cross_metric",
       "severity": "hard_fail",
-      "observed": 0.7636785488162917,
+      "observed": 0.6723194748461047,
       "benchmark_range": [
-        0.15,
+        0.1,
         0.8
       ],
       "benchmark_source": "calibrated",
-      "detail": "peak_lag=17d, peak_corr=0.764, all_at_lag0=False"
+      "detail": "peak_lag=19d, peak_corr=0.672, all_at_lag0=False"
     },
     "4.1_creative_concentration": {
       "status": "PASS",
       "category": "structural_asymmetry",
       "severity": "warn",
-      "observed": 0.10466179524068484,
+      "observed": 0.11747778400267743,
       "benchmark_range": [
-        0.06,
+        0.055,
         0.35
       ],
       "benchmark_source": "calibrated",
-      "detail": "HHI=0.1047, n_creatives=12, top_share=15.07%"
+      "detail": "HHI=0.1175, n_creatives=11, top_share=19.21%"
     },
     "4.2_customer_concentration": {
       "status": "PASS",
       "category": "structural_asymmetry",
       "severity": "warn",
-      "observed": 0.28465904865355096,
+      "observed": 0.27245766971116453,
       "benchmark_range": [
         0.25,
         0.55
       ],
       "benchmark_source": "calibrated",
-      "detail": "top10_share=28.47%, n_customers=1654, top_customer=622"
+      "detail": "top10_share=27.25%, n_customers=2207, top_customer=483"
     },
     "4.3_channel_asymmetry": {
       "status": "PASS",
       "category": "structural_asymmetry",
       "severity": "warn",
-      "observed": 3.7493205810560792,
+      "observed": 7.067983658773023,
       "benchmark_range": [
         1.5,
-        15.0
+        30.0
       ],
       "benchmark_source": "calibrated",
-      "detail": "best_worst_cpa_ratio=3.75x, n_campaigns=6"
+      "detail": "best_worst_cpa_ratio=7.07x, n_campaigns=6"
     },
     "5.1_acquisition_cost_trend": {
       "status": "SKIP",
@@ -222,7 +222,7 @@
       "severity": "hard_fail",
       "observed": null,
       "benchmark_range": [
-        -0.25,
+        -0.4,
         0.05
       ],
       "benchmark_source": "calibrated",
@@ -244,13 +244,13 @@
       "status": "WARN",
       "category": "time_dependence",
       "severity": "warn",
-      "observed": -0.04863900547876906,
+      "observed": -0.1251027418147429,
       "benchmark_range": [
         -0.12,
         0.08
       ],
       "benchmark_source": "default",
-      "detail": "monthly_trust_slope=-0.00405, annual_trend=-0.0486, n_months=3"
+      "detail": "monthly_trust_slope=-0.01043, annual_trend=-0.1251, n_months=3"
     },
     "5.5_1yr_vs_3yr_divergence": {
       "status": "SKIP",
@@ -268,61 +268,61 @@
       "status": "INFO",
       "category": "feedback_loops",
       "severity": "warn",
-      "observed": 0.0005646147119018602,
+      "observed": 0.0788709350636739,
       "benchmark_range": [
         0.0,
         0.1
       ],
       "benchmark_source": "calibrated",
-      "detail": "best_lag=7, corr=-0.371, p=0.0006, short_sim=91d"
+      "detail": "best_lag=1, corr=0.187, p=0.0789, short_sim=91d"
     },
     "6.2_trust_repeat_granger": {
       "status": "PASS",
       "category": "feedback_loops",
       "severity": "warn",
-      "observed": 9.290292707831151e-07,
+      "observed": 2.2627373363688662e-05,
       "benchmark_range": [
         0.0,
         0.1
       ],
       "benchmark_source": "calibrated",
-      "detail": "best_lag=1, corr=-0.490, p=0.0000"
+      "detail": "best_lag=1, corr=-0.431, p=0.0000"
     },
     "6.3_spiral_detection": {
       "status": "INFO",
       "category": "feedback_loops",
       "severity": "info",
-      "observed": 5,
+      "observed": 13,
       "benchmark_range": [
         0,
-        15
+        20
       ],
       "benchmark_source": "calibrated",
-      "detail": "spiral_windows=5/61, rate=8.20%"
+      "detail": "spiral_windows=13/61, rate=21.31%"
     },
     "7.1_history_effect": {
       "status": "INFO",
       "category": "memory_path_dependence",
       "severity": "warn",
-      "observed": 0.06370129263400634,
+      "observed": 0.09074660230308323,
       "benchmark_range": [
         0.08,
         0.35
       ],
       "benchmark_source": "calibrated",
-      "detail": "corr(exposure_count, order_count)=0.064, order_var=0.158, short_sim=91d"
+      "detail": "corr(exposure_count, order_count)=0.091, order_var=0.130, short_sim=91d"
     },
     "7.2_negative_experience_persistence": {
       "status": "PASS",
       "category": "memory_path_dependence",
       "severity": "warn",
-      "observed": 18.0,
+      "observed": 23.0,
       "benchmark_range": [
         12,
         120
       ],
       "benchmark_source": "calibrated",
-      "detail": "median_post_refund_gap=18d, n=15"
+      "detail": "median_post_refund_gap=23d, n=17"
     }
   }
 }

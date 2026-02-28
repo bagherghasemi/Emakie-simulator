@@ -1,47 +1,47 @@
 ==============================================================
-  STRUCTURAL DIAGNOSTICS REPORT — Run diag_20260228_192431
-  Duration: 91 days | Population: 1614
+  STRUCTURAL DIAGNOSTICS REPORT — Run diag_20260301_002126
+  Duration: 91 days | Population: 2130
   Overall: 16 PASS | 0 FAIL | 1 WARN | 4 SKIP | 5 INFO
 ==============================================================
 
   TEMPORAL STRUCTURE
-   PASS  1.1_revenue_autocorrelation              0.8035045644369921 [0.35, 0.82]
-   PASS  1.2_seasonality_presence                 0.036498232797745375 [0.003, 0.55]
-   INFO  1.3_trend_presence                       -0.6035040717155314 [-0.2, 0.45]
-   INFO  1.4_non_stationarity                     0.0027469047893663784 [0.05, 0.99]
+   PASS  1.1_revenue_autocorrelation              0.6919256958670956 [0.35, 0.82]
+   PASS  1.2_seasonality_presence                 0.024186381966669515 [0.003, 0.55]
+   INFO  1.3_trend_presence                       -0.4365897973192567 [-0.2, 0.45]
+   INFO  1.4_non_stationarity                     8.669276338743508e-05 [0.05, 0.99]
 
   DISTRIBUTION SHAPE
-   PASS  2.1_customer_ltv_distribution            0.36227230314540715 [0.35, 0.8]
-   PASS  2.2_order_value_cv                       0.822547351641154 [0.35, 1.0]
-   PASS  2.3_purchase_interval_distribution       0.7996709173179761 [0.25, 0.9]
-   PASS  2.4_refund_timing_distribution           0.5993975903614458 [0.25, 0.65]
+   PASS  2.1_customer_ltv_distribution            0.3510758720605447 [0.35, 0.8]
+   PASS  2.2_order_value_cv                       0.8012679832288496 [0.35, 1.05]
+   PASS  2.3_purchase_interval_distribution       0.7718852161278604 [0.25, 0.9]
+   PASS  2.4_refund_timing_distribution           0.5578093306288032 [0.25, 0.65]
 
   CROSS-METRIC RELATIONSHIPS
-   PASS  3.1_creative_age_vs_performance          -0.21157935600971667 [-0.65, -0.15]
-   PASS  3.2_discount_vs_repeat                   -0.10104281683229052 [-0.35, 0.15]
-   PASS  3.3_frequency_vs_conversion              0.03467141607832262 [-0.45, 0.2]
-   PASS  3.4_refund_vs_repeat                     0.03994629070157771 [-0.45, 0.1]
-   PASS  3.5_cross_lag_correlations               0.7636785488162917 [0.15, 0.8]
+   PASS  3.1_creative_age_vs_performance          -0.16986582578236606 [-0.65, -0.15]
+   PASS  3.2_discount_vs_repeat                   -0.08033844478026403 [-0.35, 0.15]
+   PASS  3.3_frequency_vs_conversion              0.05585251273143578 [-0.45, 0.3]
+   PASS  3.4_refund_vs_repeat                     0.04757784645768351 [-0.45, 0.1]
+   PASS  3.5_cross_lag_correlations               0.6723194748461047 [0.1, 0.8]
 
   STRUCTURAL ASYMMETRY
-   PASS  4.1_creative_concentration               0.10466179524068484 [0.06, 0.35]
-   PASS  4.2_customer_concentration               0.28465904865355096 [0.25, 0.55]
-   PASS  4.3_channel_asymmetry                    3.7493205810560792 [1.5, 15.0]
+   PASS  4.1_creative_concentration               0.11747778400267743 [0.055, 0.35]
+   PASS  4.2_customer_concentration               0.27245766971116453 [0.25, 0.55]
+   PASS  4.3_channel_asymmetry                    7.067983658773023 [1.5, 30.0]
 
   TIME-DEPENDENCE
    SKIP  5.1_acquisition_cost_trend               N/A          [0.05, 2.0]
-   SKIP  5.2_cohort_composition_drift             N/A          [-0.25, 0.05]
+   SKIP  5.2_cohort_composition_drift             N/A          [-0.4, 0.05]
    SKIP  5.3_repeat_rate_evolution                N/A          [-0.05, 0.25]
-   WARN  5.4_trust_baseline_trend                 -0.04863900547876906 [-0.12, 0.08]
+   WARN  5.4_trust_baseline_trend                 -0.1251027418147429 [-0.12, 0.08]
    SKIP  5.5_1yr_vs_3yr_divergence                N/A          [0.3, 1.8]
 
   FEEDBACK LOOPS
-   INFO  6.1_refund_trust_granger                 0.0005646147119018602 [0.0, 0.1]
-   PASS  6.2_trust_repeat_granger                 9.290292707831151e-07 [0.0, 0.1]
-   INFO  6.3_spiral_detection                     5            [0, 15]
+   INFO  6.1_refund_trust_granger                 0.0788709350636739 [0.0, 0.1]
+   PASS  6.2_trust_repeat_granger                 2.2627373363688662e-05 [0.0, 0.1]
+   INFO  6.3_spiral_detection                     13           [0, 20]
 
   MEMORY & PATH DEPENDENCE
-   INFO  7.1_history_effect                       0.06370129263400634 [0.08, 0.35]
-   PASS  7.2_negative_experience_persistence      18.0         [12, 120]
+   INFO  7.1_history_effect                       0.09074660230308323 [0.08, 0.35]
+   PASS  7.2_negative_experience_persistence      23.0         [12, 120]
 
 ==============================================================

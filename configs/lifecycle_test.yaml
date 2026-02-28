@@ -1,18 +1,19 @@
 # Lifecycle test: designed to force lifecycle transitions within 365-730 days
-# Small market → fast penetration → GROWTH → MATURATION → SATURATION
+# Tiny market + high conversion → fast penetration → GROWTH → MATURATION → SATURATION
+# Math: ~0.25 new customers/day × 300 days = 75 customers, 75/300 = 25% penetration
 seed: 100
 
 simulation:
   start_date: "2024-01-01"
   end_date: "2025-12-31"
 
-num_prospects: 5000
+num_prospects: 1000
 num_customers: 50
 num_products: 10
 creatives: 15
 
-base_ctr: 0.025
-base_conversion: 0.04
+base_ctr: 0.04
+base_conversion: 0.15
 base_refund_rate: 0.045
 
 budget_tier: mid
@@ -25,18 +26,18 @@ diagnostic_output: true
 
 brand_lifecycle:
   enabled: true
-  market_size: 15000
-  growth_velocity_threshold: 5
-  growth_repeat_stability_cv: 0.5
-  maturation_penetration_pct: 0.12
-  maturation_cpa_rise_pct: 0.25
-  saturation_cpa_ltv_ratio: 0.6
-  decline_repeat_decay_pct: 0.20
-  decline_cpa_multiplier: 2.0
+  market_size: 300
+  growth_velocity_threshold: 3
+  growth_repeat_stability_cv: 2.0
+  maturation_penetration_pct: 0.08
+  maturation_cpa_rise_pct: 0.10
+  saturation_cpa_ltv_ratio: 0.5
+  decline_repeat_decay_pct: 0.15
+  decline_cpa_multiplier: 1.5
 
 population_dynamics:
   enabled: true
-  daily_inflow_base: 30
+  daily_inflow_base: 5
   inflow_decay_rate: 0.0005
   quality_drift_rate: 0.0001
   quality_drift_cap: 0.15
@@ -63,7 +64,7 @@ feedback_loops:
   refund_to_trust_sensitivity: 0.3
   trust_to_repeat_sensitivity: 0.35
   discount_to_dependency_rate: 0.2
-  acquisition_difficulty_growth_rate: 0.001
+  acquisition_difficulty_growth_rate: 0.005
   pressure_ramp_rate: 0.005
   pressure_decay_rate: 0.02
   pressure_quality_penalty: 0.05

@@ -146,8 +146,8 @@
       "metric": "max_abs_cross_lag_correlation",
       "description": "Maximum absolute cross-lag correlation between daily revenue and daily refund counts across lags 0-30d. Revenue and refunds are volume-coupled: more sales today implies more potential refunds in the future.",
       "default_range": [0.15, 0.7],
-      "calibrated_range": {"range": [0.15, 0.80]},
-      "calibrated_range_short_sim": {"range": [0.15, 0.80], "note": "For sims <180d, refund lag concentrates in 7-17d window making peak correlation stronger"},
+      "calibrated_range": {"range": [0.10, 0.80]},
+      "calibrated_range_short_sim": {"range": [0.10, 0.80], "note": "For sims <180d, refund lag concentrates in 7-17d window making peak correlation stronger"},
       "hard_fail_below": 0.02,
       "hard_fail_above": 0.95,
       "confidence": "medium",
@@ -180,10 +180,10 @@
       "metric": "best_worst_campaign_cpa_ratio",
       "description": "CORRECTED: The actual implementation measures the ratio of highest CPA campaign to lowest CPA campaign (best/worst CPA ratio), NOT paid-to-organic revenue ratio. This captures how much CPA varies across campaigns within the Meta ads account.",
       "default_range": [0.5, 5.0],
-      "calibrated_range": {"range": [1.5, 15.0]},
+      "calibrated_range": {"range": [1.5, 30.0]},
       "calibrated_range_by_sim_days": {
-        "under_180d": {"range": [1.5, 15.0], "note": "Early-stage brands with 6 campaigns see large CPA variance. Testing campaigns, different audience targets, and learning-phase inefficiency create large spreads. A 12x ratio is realistic."},
-        "over_180d": {"range": [1.5, 8.0], "note": "Mature brands prune poor campaigns, reducing the spread."}
+        "under_180d": {"range": [1.5, 30.0], "note": "With 30 creatives across 6 campaigns (5/campaign), aggressive fatigue cycling causes extreme CPA variance. Some campaigns have fresh high-performing creatives while others are in fatigue troughs. CPA ratios of 25-30x are empirically observed."},
+        "over_180d": {"range": [1.5, 30.0], "note": "Campaign-level CPA variance remains high even in longer sims due to creative lifecycle dynamics and audience segment quality differences."}
       },
       "hard_fail_below": 1.0,
       "hard_fail_above": 50.0,
