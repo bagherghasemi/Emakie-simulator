@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 .env
 output/
+diagnostics_output/
+diagnostics/reports/*.json
+diagnostics/reports/*.txt
+*claude-plugins*
