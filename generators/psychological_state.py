@@ -295,6 +295,7 @@ def update_customers_from_day_orders(
     discount_drift_strength = float(config.get("discount_drift_strength", 0.01))
     refunded_order_ids = set(refunds_df["order_id"].astype(str)) if not refunds_df.empty else set()
     created_col = "created_at" if "created_at" in orders_df.columns else "order_timestamp"
+    refund_penalty_indices = set()  # Track customers with refunded orders for post-EMA penalty
 
     for _, order in orders_df.iterrows():
         oid = order.get("id")
@@ -318,6 +319,9 @@ def update_customers_from_day_orders(
             fulfillments_df,
             refunded_order_ids,
         )
+        # Track refunded orders for post-EMA direct penalty
+        if str(oid) in refunded_order_ids:
+            refund_penalty_indices.add(idx)
         mismatch = expectation - experience
 
         # Price psychology: discount shifts mismatch (premium-seeking suspicious, price-sensitive relieved)
@@ -385,6 +389,13 @@ def update_customers_from_day_orders(
     if trust_ema_weight < 1.0:
         old_trust = customers_df["trust_score"].values
         trust = trust_ema_weight * old_trust + (1.0 - trust_ema_weight) * trust
+        trust = np.clip(trust, 0.0, 1.0)
+
+    # Post-EMA direct refund trust penalty (bypasses EMA dampening)
+    refund_direct_penalty = float(config.get("feedback_loops", {}).get("refund_direct_trust_penalty", 0.08))
+    if refund_direct_penalty > 0 and refund_penalty_indices:
+        for idx in refund_penalty_indices:
+            trust[idx] -= refund_direct_penalty
         trust = np.clip(trust, 0.0, 1.0)
 
     customers_df["trust_score"] = trust

@@ -1,10 +1,10 @@
-# Diagnostic run: 1095 days (3 years) — final boss test
-# No project_id → parquet-only output (no BigQuery)
+# Lifecycle test: designed to force lifecycle transitions within 365-730 days
+# Small market → fast penetration → GROWTH → MATURATION → SATURATION
 seed: 100
 
 simulation:
   start_date: "2024-01-01"
-  end_date: "2026-12-31"
+  end_date: "2025-12-31"
 
 num_prospects: 5000
 num_customers: 50
@@ -13,7 +13,7 @@ creatives: 15
 
 base_ctr: 0.025
 base_conversion: 0.04
-base_refund_rate: 0.045
+base_refund_rate: 0.07
 
 budget_tier: mid
 budget_concentration: 2.0
@@ -21,15 +21,17 @@ budget_volatility: 0.25
 cpm: 14.0
 lpv_rate: 0.72
 
+diagnostic_output: true
+
 brand_lifecycle:
   enabled: true
-  market_size: 50000
+  market_size: 15000
   growth_velocity_threshold: 5
-  growth_repeat_stability_cv: 0.3
-  maturation_penetration_pct: 0.20
-  maturation_cpa_rise_pct: 0.30
-  saturation_cpa_ltv_ratio: 0.8
-  decline_repeat_decay_pct: 0.30
+  growth_repeat_stability_cv: 0.5
+  maturation_penetration_pct: 0.12
+  maturation_cpa_rise_pct: 0.25
+  saturation_cpa_ltv_ratio: 0.6
+  decline_repeat_decay_pct: 0.20
   decline_cpa_multiplier: 2.0
 
 population_dynamics:
@@ -40,10 +42,8 @@ population_dynamics:
   quality_drift_cap: 0.15
   pool_expiry_days: 365
 
-diagnostic_output: true
-
 lag_structure:
-  trust_ema_weight: 0.60
+  trust_ema_weight: 0.70
   dependency_ema_weight: 0.90
   refund_timing_modes:
     - [5, 2, 0.6]
@@ -61,17 +61,16 @@ momentum:
 feedback_loops:
   enabled: true
   refund_to_trust_sensitivity: 0.3
-  trust_to_repeat_sensitivity: 0.35
+  trust_to_repeat_sensitivity: 0.5
   discount_to_dependency_rate: 0.2
-  acquisition_difficulty_growth_rate: 0.0005
-  pressure_ramp_rate: 0.005
-  pressure_decay_rate: 0.02
-  pressure_quality_penalty: 0.05
+  acquisition_difficulty_growth_rate: 0.001
+  pressure_ramp_rate: 0.008
+  pressure_decay_rate: 0.015
+  pressure_quality_penalty: 0.1
   revenue_target_window_days: 30
-  refund_direct_trust_penalty: 0.12
 
 memory:
-  negative_experience_decay_rate: 0.0005
+  negative_experience_decay_rate: 0.001
   positive_experience_decay_rate: 0.005
   ad_fatigue_recovery_rate: 0.01
   brand_memory_decay_after_days: 90

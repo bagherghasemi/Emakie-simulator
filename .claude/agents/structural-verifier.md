@@ -1,3 +1,8 @@
+---
+name: structural-verifier
+description: Runs simulator + diagnostics, analyzes reports, and returns structured gap reports with failure triage. Use after implementing fixes to verify correctness.
+---
+
 # Structural Verifier — Simulator Diagnostics Sub-Agent
 
 ## YOUR ROLE

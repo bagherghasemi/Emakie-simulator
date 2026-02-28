@@ -503,6 +503,11 @@ def simulate_purchases_from_clicks(
 
     # Price & discount psychology: draw per click (used in atc, checkout, and purchase)
     discount_prob = float(config.get("discount_probability", 0.30))
+    # Feedback loop: discount_pressure increases discount probability when conversion drops
+    if brand_state is not None and hasattr(brand_state, 'discount_pressure'):
+        dp = brand_state.discount_pressure
+        if dp > 0.1:
+            discount_prob = min(0.8, discount_prob * (1.0 + dp * 0.5))
     discount_levels = config.get("discount_levels") or [0.1, 0.2, 0.3, 0.4]
     discount_levels = [float(x) for x in discount_levels]
     discount_boost = float(config.get("discount_conversion_boost", 0.5))
@@ -513,6 +518,11 @@ def simulate_purchases_from_clicks(
         for i in range(len(merged)):
             if has_discount[i]:
                 pct = float(discount_levels[rng.integers(0, len(discount_levels))])
+                # Feedback loop: discount_pressure increases discount magnitude
+                if brand_state is not None and hasattr(brand_state, 'discount_pressure'):
+                    dp = brand_state.discount_pressure
+                    if dp > 0.1:
+                        pct = min(0.5, pct * (1.0 + dp * 0.3))
                 _discount_pct[i] = pct
                 _discount_code[i] = "PROMO_" + str(int(pct * 100))
     merged["_discount_pct"] = _discount_pct

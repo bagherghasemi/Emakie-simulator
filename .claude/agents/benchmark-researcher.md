@@ -1,3 +1,8 @@
+---
+name: benchmark-researcher
+description: One-time research agent. Searches for real-world DTC/Shopify brand data patterns and produces calibrated benchmark ranges for the diagnostics script.
+---
+
 # Benchmark Researcher — DTC Brand Data Pattern Calibration Sub-Agent
 
 ## YOUR ROLE

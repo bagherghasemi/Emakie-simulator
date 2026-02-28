@@ -1,0 +1,89 @@
+name: Diagnostic Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      config:
+        description: "Config to run"
+        required: true
+        default: diagnostic_run
+        type: choice
+        options:
+          - diagnostic_run
+          - diagnostic_run_1yr
+          - diagnostic_run_3yr
+          - lifecycle_test
+      run_diagnostics:
+        description: "Run structural diagnostics"
+        required: false
+        default: true
+        type: boolean
+      run_causal_audit:
+        description: "Run causal audit"
+        required: false
+        default: true
+        type: boolean
+      run_final_boss:
+        description: "Run FINAL BOSS comparison"
+        required: false
+        default: false
+        type: boolean
+      run_label:
+        description: "Label for this run (appears in artifacts)"
+        required: false
+        default: ""
+        type: string
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 720
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run simulator
+        run: |
+          python -u main.py configs/${{ inputs.config }}.yaml 2>&1 | tee sim.log
+
+      - name: Run structural diagnostics
+        if: ${{ inputs.run_diagnostics }}
+        run: |
+          python diagnostics/structural_diagnostics.py \
+            --data-dir output/ \
+            --diag-dir diagnostics_output/ 2>&1 | tee diagnostics.log
+
+      - name: Run causal audit
+        if: ${{ inputs.run_causal_audit }}
+        run: |
+          python diagnostics/causal_audit.py --data-dir output/ 2>&1 | tee causal_audit.log
+
+      - name: Run FINAL BOSS comparison
+        if: ${{ inputs.run_final_boss }}
+        run: |
+          python diagnostics/final_boss_comparison.py 2>&1 | tee final_boss.log
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagnostic-results-${{ inputs.config }}-${{ inputs.run_label || github.run_number }}
+          path: |
+            output/
+            diagnostics_output/
+            diagnostics/reports/
+            sim.log
+            diagnostics.log
+            causal_audit.log
+            final_boss.log
+          retention-days: 30

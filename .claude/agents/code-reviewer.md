@@ -1,3 +1,8 @@
+---
+name: code-reviewer
+description: Pre-verification architecture audit. Reviews code changes for wiring issues, feedback loop integrity, schema preservation, config integration, and temporal safety BEFORE running the simulator.
+---
+
 # Code Reviewer — Pre-Verification Architecture Audit Sub-Agent
 
 ## YOUR ROLE

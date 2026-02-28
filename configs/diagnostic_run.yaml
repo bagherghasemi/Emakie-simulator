@@ -13,11 +13,11 @@ creatives: 15
 
 base_ctr: 0.025
 base_conversion: 0.04
-base_refund_rate: 0.07
+base_refund_rate: 0.045
 
 budget_tier: mid
 budget_concentration: 2.0
-budget_volatility: 0.25
+budget_volatility: 0.35
 cpm: 14.0
 lpv_rate: 0.72
 
@@ -35,14 +35,16 @@ brand_lifecycle:
 
 population_dynamics:
   enabled: true
-  daily_inflow_base: 30
-  inflow_decay_rate: 0.0005
-  quality_drift_rate: 0.0001
+  daily_inflow_base: 50
+  inflow_decay_rate: 0.0003
+  quality_drift_rate: 0.00005
   quality_drift_cap: 0.15
   pool_expiry_days: 365
 
+diagnostic_output: true
+
 lag_structure:
-  trust_ema_weight: 0.85
+  trust_ema_weight: 0.60
   dependency_ema_weight: 0.90
   refund_timing_modes:
     - [5, 2, 0.6]
@@ -50,9 +52,9 @@ lag_structure:
 
 momentum:
   enabled: true
-  revenue_autocorrelation: 0.7
+  revenue_autocorrelation: 0.55
   ctr_autocorrelation: 0.5
-  conversion_autocorrelation: 0.6
+  conversion_autocorrelation: 0.45
   seasonality:
     weekly_pattern: [0.85, 0.95, 1.0, 1.0, 1.05, 1.1, 1.05]
     monthly_pattern: [0.9, 0.85, 0.95, 1.0, 1.0, 0.95, 0.9, 0.9, 1.05, 1.1, 1.15, 1.3]
@@ -60,16 +62,17 @@ momentum:
 feedback_loops:
   enabled: true
   refund_to_trust_sensitivity: 0.3
-  trust_to_repeat_sensitivity: 0.5
+  trust_to_repeat_sensitivity: 0.35
   discount_to_dependency_rate: 0.2
-  acquisition_difficulty_growth_rate: 0.001
-  pressure_ramp_rate: 0.02
-  pressure_decay_rate: 0.01
-  pressure_quality_penalty: 0.1
+  acquisition_difficulty_growth_rate: 0.0003
+  pressure_ramp_rate: 0.005
+  pressure_decay_rate: 0.02
+  pressure_quality_penalty: 0.05
   revenue_target_window_days: 30
+  refund_direct_trust_penalty: 0.12
 
 memory:
-  negative_experience_decay_rate: 0.001
+  negative_experience_decay_rate: 0.0005
   positive_experience_decay_rate: 0.005
   ad_fatigue_recovery_rate: 0.01
   brand_memory_decay_after_days: 90
@@ -80,17 +83,17 @@ memory:
 
 distribution_realism:
   enabled: true
-  spending_propensity_sigma: 0.5
-  creative_quality_sigma: 0.4
+  spending_propensity_sigma: 0.95
+  creative_quality_sigma: 0.7
   repeat_interval_mu: 3.5
   repeat_interval_sigma: 0.8
 
 creative_lifecycle:
   enabled: true
-  novelty_bonus_duration_impressions: 5000
-  ramp_end_impressions: 10000
-  plateau_duration_impressions: 50000
-  fatigue_half_life_impressions: 100000
+  novelty_bonus_duration_impressions: 2000
+  ramp_end_impressions: 5000
+  plateau_duration_impressions: 15000
+  fatigue_half_life_impressions: 17000
   min_performance_floor: 0.2
 
 long_term_accumulators:

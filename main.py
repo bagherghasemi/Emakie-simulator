@@ -63,6 +63,7 @@ from generators.operations import simulate_fulfillments
 from loaders.static_entities import load_static_entities
 
 OUTPUT_ROOT = Path(__file__).parent / "output"
+DIAG_OUTPUT_ROOT = Path(__file__).parent / "diagnostics_output"
 
 
 def _assert_shopify_static_hierarchy(
@@ -666,8 +667,8 @@ def _update_customers_last_order_from_orders(
 def _enrich_performance_with_hierarchy(
     performance_df: pd.DataFrame, ads_df: pd.DataFrame
 ) -> pd.DataFrame:
-    """Add adset_id, campaign_id, account_id to meta_ad_performance_daily from ads_df. Overwrites if present."""
-    hierarchy_cols = ["adset_id", "campaign_id", "account_id"]
+    """Add adset_id, campaign_id, account_id, creative_id to meta_ad_performance_daily from ads_df. Overwrites if present."""
+    hierarchy_cols = ["adset_id", "campaign_id", "account_id", "creative_id"]
     out = performance_df.drop(columns=[c for c in hierarchy_cols if c in performance_df.columns])
     ads_lookup = ads_df[["id"] + hierarchy_cols].rename(columns={"id": "_ad_id_key"})
     out = out.merge(ads_lookup, left_on="ad_id", right_on="_ad_id_key", how="left").drop(
@@ -687,11 +688,42 @@ SUBFOLDERS = (
 )
 
 
-def _ensure_output_dirs() -> None:
+def _ensure_output_dirs(diagnostic_output: bool = False) -> None:
     """Create output/ and subfolders if they do not exist (append-safe)."""
     OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
     for name in SUBFOLDERS:
         (OUTPUT_ROOT / name).mkdir(parents=True, exist_ok=True)
+    if diagnostic_output:
+        (DIAG_OUTPUT_ROOT / "brand_state_daily").mkdir(parents=True, exist_ok=True)
+
+
+def _write_diagnostic_snapshot(
+    date_str: str,
+    brand_state: "BrandState",
+    customers_df: pd.DataFrame,
+) -> None:
+    """Write one row per day of brand-level diagnostic data."""
+    trust_vals = customers_df["trust_score"].dropna() if "trust_score" in customers_df.columns else pd.Series(dtype=float)
+    row = {
+        "date": date_str,
+        "lifecycle_phase": brand_state.lifecycle_phase.value,
+        "mean_trust_score": float(trust_vals.mean()) if len(trust_vals) > 0 else None,
+        "median_trust_score": float(trust_vals.median()) if len(trust_vals) > 0 else None,
+        "brand_trust_baseline": round(brand_state.brand_trust_baseline, 6),
+        "trust_floor": round(brand_state.get_trust_floor(), 6) if hasattr(brand_state, "get_trust_floor") else None,
+        "market_penetration": round(brand_state.market_penetration, 6),
+        "acquisition_pressure": round(brand_state.acquisition_pressure, 4),
+        "discount_pressure": round(brand_state.discount_pressure, 4),
+        "cumulative_refund_rate_ema": round(brand_state.cumulative_refund_rate_ema, 6),
+        "cumulative_creative_churn": brand_state.cumulative_creative_churn,
+        "cumulative_discount_usage_pct": round(brand_state.cumulative_discount_usage_pct, 6),
+        "brand_reputation_score": round(brand_state.brand_reputation_score, 6),
+        "audience_exhaustion_index": round(brand_state.audience_exhaustion_index, 6),
+        "n_customers": len(customers_df),
+    }
+    df = pd.DataFrame([row])
+    path = DIAG_OUTPUT_ROOT / "brand_state_daily" / f"{date_str}.parquet"
+    df.to_parquet(path, index=False)
 
 
 def _set_cart_memory(df: pd.DataFrame, abandoned_carts_df: pd.DataFrame, date_str: str) -> None:
@@ -894,7 +926,8 @@ def main() -> None:
         f"Simulation: {start_str} to {end_str} ({num_days} days) [config: {config_path.resolve()}]"
     )
 
-    _ensure_output_dirs()
+    diagnostic_output = config.get("diagnostic_output", False)
+    _ensure_output_dirs(diagnostic_output=diagnostic_output)
 
     # --- Setup (once): static entities ---
     # First-purchase-creates-customer: prospects (anonymous) see ads and click; conversion creates customer.
@@ -1192,6 +1225,10 @@ def main() -> None:
             newly_churned = len(new_exhausted - old_exhausted)
             if newly_churned > 0:
                 brand_state.cumulative_creative_churn += newly_churned
+
+        # Diagnostic output: write daily brand state snapshot
+        if diagnostic_output:
+            _write_diagnostic_snapshot(date_str, brand_state, customers_df)
 
         print(
             f"{date_str}\t phase={brand_state.lifecycle_phase.value}\t exposures={n_exposures}\t clicks={n_clicks}\t "

@@ -2,67 +2,67 @@
   "chain_integrity": {
     "refund_to_order": {
       "pass": true,
-      "total_refunds": 3043,
+      "total_refunds": 678,
       "orphan_count": 0,
       "orphan_sample": []
     },
     "attribution_validity": {
       "pass": true,
-      "total_attributed": 14155,
+      "total_attributed": 3463,
       "invalid_count": 0
     },
     "line_items_to_orders": {
       "pass": true,
-      "total_line_items": 14155,
+      "total_line_items": 3463,
       "orphan_count": 0
     },
     "transactions_to_orders": {
       "pass": true,
-      "total_transactions": 14155,
+      "total_transactions": 3463,
       "orphan_count": 0
     },
     "fulfillments_to_orders": {
       "pass": true,
-      "total_fulfillments": 12129,
+      "total_fulfillments": 2982,
       "orphan_count": 0
     }
   },
   "unique_ids": {
     "orders_unique_pk": {
       "pass": true,
-      "total": 14155,
-      "unique": 14155,
+      "total": 3463,
+      "unique": 3463,
       "duplicates": 0
     },
     "line_items_unique_pk": {
       "pass": true,
-      "total": 14155,
-      "unique": 14155,
+      "total": 3463,
+      "unique": 3463,
       "duplicates": 0
     },
     "transactions_unique_pk": {
       "pass": true,
-      "total": 14155,
-      "unique": 14155,
+      "total": 3463,
+      "unique": 3463,
       "duplicates": 0
     },
     "fulfillments_unique_pk": {
       "pass": true,
-      "total": 12129,
-      "unique": 12129,
+      "total": 2982,
+      "unique": 2982,
       "duplicates": 0
     },
     "refunds_unique_pk": {
       "pass": true,
-      "total": 3043,
-      "unique": 3043,
+      "total": 678,
+      "unique": 678,
       "duplicates": 0
     }
   },
   "temporal_consistency": {
     "refund_after_order": {
       "pass": true,
-      "total_checked": 3043,
+      "total_checked": 678,
       "violations": 0
     }
   },
